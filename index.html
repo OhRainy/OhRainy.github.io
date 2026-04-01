@@ -394,6 +394,15 @@
       animation: none;
     }
 
+    .np-label.error-label {
+      color: #ff6b6b;
+    }
+
+    .np-label.error-label .np-dot {
+      background: #ff6b6b;
+      animation: none;
+    }
+
     .np-song {
       font-size: 0.8rem; font-weight: 600; color: var(--fg);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -405,7 +414,8 @@
     }
 
     .np-idle-text {
-      font-size: 0.78rem; color: var(--fg-muted); font-weight: 500;
+      font-size: 0.74rem; color: var(--fg-muted); font-weight: 500;
+      line-height: 1.4;
     }
 
     .np-progress-wrap {
@@ -503,7 +513,7 @@
       <p class="section-title"><i class="fa-solid fa-headphones"></i> Now Playing</p>
       <div class="now-playing idle" id="np-container">
         <div class="np-art" id="np-art">
-          <div class="np-bars paused" id="np-bars">
+          <div class="np-bars paused">
             <div class="np-bar"></div>
             <div class="np-bar"></div>
             <div class="np-bar"></div>
@@ -511,11 +521,11 @@
           </div>
         </div>
         <div class="np-info" id="np-info">
-          <div class="np-label idle-label" id="np-label">
+          <div class="np-label idle-label">
             <span class="np-dot"></span>
-            <span id="np-label-text">Connecting...</span>
+            <span>Connecting...</span>
           </div>
-          <div class="np-idle-text" id="np-idle-text">Loading Spotify status</div>
+          <div class="np-idle-text">Loading Spotify status</div>
         </div>
       </div>
 
@@ -685,7 +695,7 @@
     });
 
     /* ══════════════════════════════════════
-       Live Spotify via Lanyard
+       Live Spotify via Lanyard (with debug)
        ══════════════════════════════════════ */
 
     const DISCORD_USER_ID = '1293118311894089733';
@@ -694,7 +704,16 @@
     const npArt = document.getElementById('np-art');
     const npInfo = document.getElementById('np-info');
 
-    function setSpotifyIdle(message) {
+    function setError(message) {
+      npContainer.className = 'now-playing idle';
+      npArt.innerHTML = '<div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>';
+      npInfo.innerHTML = `
+        <div class="np-label error-label"><span class="np-dot"></span><span>Error</span></div>
+        <div class="np-idle-text">${message}</div>
+      `;
+    }
+
+    function setIdle(message) {
       npContainer.className = 'now-playing idle';
       npArt.innerHTML = '<div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>';
       npInfo.innerHTML = `
@@ -703,22 +722,18 @@
       `;
     }
 
-    function setSpotifyActive(data) {
-      const song = data.song || 'Unknown';
-      const artist = data.artist || 'Unknown';
-      const image = data.image || '';
-      const isPlaying = data.playing !== false;
-      const progress = data.progress || 0;
-      const duration = data.duration || 1;
-      const pct = Math.min((progress / duration) * 100, 100);
-
+    function setActive(song, artist, image, isPlaying, startTs, endTs) {
       npContainer.className = 'now-playing active';
 
       if (image) {
-        npArt.innerHTML = `<img src="${image}" alt="Album Art">`;
+        npArt.innerHTML = '<img src="' + image + '" alt="Album Art">';
       } else {
-        npArt.innerHTML = `<div class="np-bars ${isPlaying ? '' : 'paused'}"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>`;
+        npArt.innerHTML = '<div class="np-bars ' + (isPlaying ? '' : 'paused') + '"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>';
       }
+
+      const elapsed = isPlaying ? (Date.now() - startTs) : 0;
+      const duration = endTs - startTs;
+      const pct = isPlaying ? Math.min((elapsed / duration) * 100, 100) : 0;
 
       npInfo.innerHTML = `
         <div class="np-label">
@@ -727,93 +742,125 @@
         </div>
         <div class="np-song">${song}</div>
         <div class="np-artist">${artist}</div>
-        ${isPlaying ? `<div class="np-progress-wrap"><div class="np-progress-bar" style="width:${pct}%"></div></div>` : ''}
+        ${isPlaying ? '<div class="np-progress-wrap"><div class="np-progress-bar" style="width:' + pct + '%"></div></div>' : ''}
       `;
 
-      if (isPlaying) updateProgress(progress, duration);
+      if (isPlaying) startProgress(startTs, duration);
+    }
+
+    let progressTimer = null;
+
+    function startProgress(startTs, duration) {
+      if (progressTimer) clearInterval(progressTimer);
+      const bar = npContainer.querySelector('.np-progress-bar');
+      if (!bar) return;
+
+      progressTimer = setInterval(() => {
+        const elapsed = Date.now() - startTs;
+        const pct = Math.min((elapsed / duration) * 100, 100);
+        bar.style.width = pct + '%';
+        if (pct >= 100) clearInterval(progressTimer);
+      }, 1000);
     }
 
     async function fetchLanyard() {
       try {
-        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
-        if (!res.ok) throw new Error('User not found');
+        const res = await fetch('https://api.lanyard.rest/v1/users/' + DISCORD_USER_ID);
+
+        // API returned an error
+        if (res.status === 404) {
+          setError('User not found. Did you join discord.gg/lanyard ?');
+          return;
+        }
+
+        if (!res.ok) {
+          setError('API error (' + res.status + '). Try again later.');
+          return;
+        }
+
         const json = await res.json();
 
         if (!json.success || !json.data) {
-          setSpotifyIdle('Could not load data');
+          setError('Lanyard returned invalid data.');
           return;
         }
 
         const d = json.data;
+
+        // User found but not in Lanyard server
+        if (!d.discord_user) {
+          setError('Not detected by Lanyard. Join discord.gg/lanyard');
+          return;
+        }
+
         const spotify = d.spotify;
         const listening = d.listening_to_spotify;
 
         if (listening && spotify) {
-          setSpotifyActive({
-            song: spotify.song,
-            artist: spotify.artist,
-            image: spotify.album_art_url,
-            playing: true,
-            progress: Date.now() - spotify.timestamps.start,
-            duration: spotify.timestamps.end - spotify.timestamps.start
-          });
+          setActive(
+            spotify.song,
+            spotify.artist,
+            spotify.album_art_url,
+            true,
+            spotify.timestamps.start,
+            spotify.timestamps.end
+          );
         } else if (spotify && !listening) {
-          setSpotifyActive({
-            song: spotify.song,
-            artist: spotify.artist,
-            image: spotify.album_art_url,
-            playing: false,
-            progress: 0,
-            duration: 1
-          });
+          setActive(
+            spotify.song,
+            spotify.artist,
+            spotify.album_art_url,
+            false,
+            0,
+            1
+          );
         } else {
-          setSpotifyIdle('Nothing playing right now');
+          // Check if Spotify is even connected
+          const hasSpotify = d.activities && d.activities.some(a => a.type === 2);
+          if (!hasSpotify) {
+            setIdle('Nothing playing. Make sure Spotify is connected in Discord settings.');
+          } else {
+            setIdle('Nothing playing right now');
+          }
         }
       } catch (e) {
-        setSpotifyIdle('Could not connect');
+        setError('Could not connect to Lanyard.');
       }
-    }
-
-    let progressInterval = null;
-
-    function updateProgress(elapsed, total) {
-      if (progressInterval) clearInterval(progressInterval);
-      const bar = npContainer.querySelector('.np-progress-bar');
-      if (!bar) return;
-
-      const startTime = Date.now() - elapsed;
-
-      progressInterval = setInterval(() => {
-        const now = Date.now();
-        const current = now - startTime;
-        const pct = Math.min((current / total) * 100, 100);
-        bar.style.width = pct + '%';
-        if (pct >= 100) clearInterval(progressInterval);
-      }, 1000);
     }
 
     // Initial fetch
     fetchLanyard();
 
-    // Poll every 15 seconds as fallback
+    // Poll every 15 seconds
     setInterval(fetchLanyard, 15000);
 
-    // WebSocket for real-time updates
+    // WebSocket for instant updates
     try {
       const ws = new WebSocket('wss://api.lanyard.rest/socket');
+
       ws.addEventListener('open', () => {
         ws.send(JSON.stringify({
           op: 2,
           d: { subscribe_to_id: DISCORD_USER_ID }
         }));
       });
+
       ws.addEventListener('message', (event) => {
-        const msg = JSON.parse(event.data);
-        if (msg.op === 1) return;
-        if (msg.op === 0) fetchLanyard();
+        try {
+          const msg = JSON.parse(event.data);
+          // Hello message (op 1) — ignore
+          if (msg.op === 1) return;
+          // Event (op 0) — refresh data
+          if (msg.op === 0) fetchLanyard();
+        } catch (e) {}
       });
-      ws.addEventListener('close', () => {});
-    } catch (e) {}
+
+      ws.addEventListener('close', () => {
+        // WebSocket closed, polling will handle it
+      });
+    } catch (e) {
+      // WebSocket not supported, polling is the fallback
+    }
   </script>
 </body>
 </html>
