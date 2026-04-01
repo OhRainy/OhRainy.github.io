@@ -23,6 +23,7 @@
       --sakura: #ffb7d5;
       --border: rgba(255, 126, 179, 0.15);
       --card-radius: 24px;
+      --spotify-green: #1db954;
     }
 
     html { scroll-behavior: smooth; }
@@ -301,7 +302,6 @@
       color: var(--fg-muted);
       font-size: 0.8rem; font-weight: 600;
       position: relative; z-index: 2;
-      transition: all 0.3s ease;
     }
 
     .social-text i {
@@ -310,13 +310,9 @@
     }
 
     .social-text span { opacity: 0.8; }
+    .social-text .discord-name { color: var(--fg); font-weight: 700; opacity: 1; }
 
-    .social-text .discord-name {
-      color: var(--fg);
-      font-weight: 700;
-      opacity: 1;
-    }
-
+    /* ── Now Playing ── */
     .now-playing {
       display: flex; align-items: center; gap: 12px;
       padding: 12px 14px; border-radius: 14px;
@@ -330,10 +326,6 @@
     .now-playing.active {
       border-color: rgba(29,185,84,0.25);
       background: rgba(29,185,84,0.04);
-    }
-
-    .now-playing.idle {
-      border-color: rgba(255,255,255,0.04);
     }
 
     .np-art {
@@ -375,33 +367,18 @@
 
     .np-label {
       font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px;
-      color: #1db954; font-weight: 700; margin-bottom: 2px;
+      color: var(--spotify-green); font-weight: 700; margin-bottom: 2px;
       display: flex; align-items: center; gap: 5px;
     }
 
     .np-label .np-dot {
       width: 5px; height: 5px; border-radius: 50%;
-      background: #1db954;
+      background: var(--spotify-green);
       animation: pulse 1.5s ease-in-out infinite;
     }
 
-    .np-label.idle-label {
-      color: var(--fg-muted);
-    }
-
-    .np-label.idle-label .np-dot {
-      background: var(--fg-muted);
-      animation: none;
-    }
-
-    .np-label.error-label {
-      color: #ff6b6b;
-    }
-
-    .np-label.error-label .np-dot {
-      background: #ff6b6b;
-      animation: none;
-    }
+    .np-label.idle-label { color: var(--fg-muted); }
+    .np-label.idle-label .np-dot { background: var(--fg-muted); animation: none; }
 
     .np-song {
       font-size: 0.8rem; font-weight: 600; color: var(--fg);
@@ -426,9 +403,32 @@
 
     .np-progress-bar {
       height: 100%; border-radius: 3px;
-      background: #1db954;
+      background: var(--spotify-green);
       transition: width 1s linear;
     }
+
+    /* Connect Spotify button */
+    .spotify-connect {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 12px 14px; border-radius: 14px;
+      background: rgba(29,185,84,0.08);
+      border: 1px solid rgba(29,185,84,0.2);
+      color: var(--spotify-green);
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.8rem; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative; z-index: 2;
+    }
+
+    .spotify-connect:hover {
+      background: rgba(29,185,84,0.15);
+      border-color: rgba(29,185,84,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(29,185,84,0.15);
+    }
+
+    .spotify-connect i { font-size: 1rem; }
 
     .footer-quote {
       text-align: center; margin-top: 6px;
@@ -440,9 +440,7 @@
       line-height: 1.5; opacity: 0.7;
     }
 
-    .footer-quote .sparkle {
-      color: var(--sakura); font-style: normal;
-    }
+    .footer-quote .sparkle { color: var(--sakura); font-style: normal; }
 
     @media (max-width: 480px) {
       .card-wrapper { padding: 12px; }
@@ -511,21 +509,23 @@
       <div class="divider"></div>
 
       <p class="section-title"><i class="fa-solid fa-headphones"></i> Now Playing</p>
-      <div class="now-playing idle" id="np-container">
-        <div class="np-art" id="np-art">
-          <div class="np-bars paused">
-            <div class="np-bar"></div>
-            <div class="np-bar"></div>
-            <div class="np-bar"></div>
-            <div class="np-bar"></div>
+      <div id="np-area">
+        <div class="now-playing" id="np-container">
+          <div class="np-art" id="np-art">
+            <div class="np-bars paused">
+              <div class="np-bar"></div>
+              <div class="np-bar"></div>
+              <div class="np-bar"></div>
+              <div class="np-bar"></div>
+            </div>
           </div>
-        </div>
-        <div class="np-info" id="np-info">
-          <div class="np-label idle-label">
-            <span class="np-dot"></span>
-            <span>Connecting...</span>
+          <div class="np-info" id="np-info">
+            <div class="np-label idle-label">
+              <span class="np-dot"></span>
+              <span>Loading...</span>
+            </div>
+            <div class="np-idle-text">Connecting to Spotify</div>
           </div>
-          <div class="np-idle-text">Loading Spotify status</div>
         </div>
       </div>
 
@@ -563,304 +563,326 @@
 
   <script>
     /* ══════════════════════════════════════
-       Stars Background
+       Stars
        ══════════════════════════════════════ */
-    (function initStars() {
-      const canvas = document.getElementById('stars-canvas');
-      const ctx = canvas.getContext('2d');
+    (function() {
+      const c = document.getElementById('stars-canvas');
+      const ctx = c.getContext('2d');
       let stars = [];
-      const STAR_COUNT = 160;
-
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-
-      function createStars() {
+      function resize() { c.width = innerWidth; c.height = innerHeight; }
+      function make() {
         stars = [];
-        for (let i = 0; i < STAR_COUNT; i++) {
-          stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 1.4 + 0.3,
-            speed: Math.random() * 0.008 + 0.003,
-            phase: Math.random() * Math.PI * 2
-          });
-        }
+        for (let i = 0; i < 160; i++) stars.push({
+          x: Math.random() * c.width, y: Math.random() * c.height,
+          r: Math.random() * 1.4 + 0.3, sp: Math.random() * 0.008 + 0.003,
+          ph: Math.random() * Math.PI * 2
+        });
       }
-
-      function draw(time) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      function draw(t) {
+        ctx.clearRect(0, 0, c.width, c.height);
         for (const s of stars) {
-          const twinkle = 0.4 + 0.6 * Math.sin(time * s.speed + s.phase);
+          const tw = 0.4 + 0.6 * Math.sin(t * s.sp + s.ph);
           ctx.beginPath();
           ctx.arc(s.x, s.y, Math.max(0.1, s.r), 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(220, 210, 255, ${twinkle})`;
+          ctx.fillStyle = `rgba(220,210,255,${tw})`;
           ctx.fill();
         }
         requestAnimationFrame(draw);
       }
-
-      resize();
-      createStars();
-      requestAnimationFrame(draw);
-      window.addEventListener('resize', () => { resize(); createStars(); });
+      resize(); make(); requestAnimationFrame(draw);
+      addEventListener('resize', () => { resize(); make(); });
     })();
 
     /* ══════════════════════════════════════
        Sakura Petals
        ══════════════════════════════════════ */
-    (function initSakura() {
-      const canvas = document.getElementById('sakura-canvas');
-      const ctx = canvas.getContext('2d');
+    (function() {
+      const c = document.getElementById('sakura-canvas');
+      const ctx = c.getContext('2d');
       let petals = [];
-      const PETAL_COUNT = 28;
-
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+      function resize() { c.width = innerWidth; c.height = innerHeight; }
+      function petal(x, y, sz, rot, a) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.globalAlpha = a;
+        ctx.beginPath(); ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(sz*0.4,-sz*0.6,sz,-sz*0.4,sz*0.5,sz*0.1);
+        ctx.bezierCurveTo(sz*0.2,sz*0.5,-sz*0.1,sz*0.3,0,0);
+        ctx.fillStyle = `rgba(255,183,213,${a})`; ctx.fill();
+        ctx.globalAlpha = 1; ctx.restore();
       }
-
-      function drawPetal(x, y, size, rotation, alpha) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rotation);
-        ctx.globalAlpha = alpha;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(size * 0.4, -size * 0.6, size, -size * 0.4, size * 0.5, size * 0.1);
-        ctx.bezierCurveTo(size * 0.2, size * 0.5, -size * 0.1, size * 0.3, 0, 0);
-        ctx.fillStyle = `rgba(255, 183, 213, ${alpha})`;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-        ctx.restore();
+      function mk() {
+        return { x: Math.random()*c.width, y: -20-Math.random()*60,
+          sz: Math.random()*10+7, sy: Math.random()*0.8+0.4,
+          sx: Math.random()*0.6-0.1, rot: Math.random()*Math.PI*2,
+          rs: (Math.random()-0.5)*0.02, a: Math.random()*0.4+0.2,
+          wp: Math.random()*Math.PI*2, ws: Math.random()*0.02+0.01 };
       }
-
-      function createPetal() {
-        return {
-          x: Math.random() * canvas.width,
-          y: -20 - Math.random() * 60,
-          size: Math.random() * 10 + 7,
-          speedY: Math.random() * 0.8 + 0.4,
-          speedX: Math.random() * 0.6 - 0.1,
-          rotation: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.02,
-          alpha: Math.random() * 0.4 + 0.2,
-          wobblePhase: Math.random() * Math.PI * 2,
-          wobbleSpeed: Math.random() * 0.02 + 0.01
-        };
-      }
-
-      function init() {
-        petals = [];
-        for (let i = 0; i < PETAL_COUNT; i++) {
-          const p = createPetal();
-          p.y = Math.random() * canvas.height;
-          petals.push(p);
+      function init() { petals = []; for (let i=0;i<28;i++) { const p=mk(); p.y=Math.random()*c.height; petals.push(p); } }
+      function anim() {
+        ctx.clearRect(0,0,c.width,c.height);
+        for (let i=0;i<petals.length;i++) {
+          const p=petals[i]; p.wp+=p.ws; p.x+=p.sx+Math.sin(p.wp)*0.5;
+          p.y+=p.sy; p.rot+=p.rs; petal(p.x,p.y,p.sz,p.rot,p.a);
+          if (p.y>c.height+30||p.x>c.width+30||p.x<-30) petals[i]=mk();
         }
+        requestAnimationFrame(anim);
       }
-
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < petals.length; i++) {
-          const p = petals[i];
-          p.wobblePhase += p.wobbleSpeed;
-          p.x += p.speedX + Math.sin(p.wobblePhase) * 0.5;
-          p.y += p.speedY;
-          p.rotation += p.rotSpeed;
-          drawPetal(p.x, p.y, p.size, p.rotation, p.alpha);
-          if (p.y > canvas.height + 30 || p.x > canvas.width + 30 || p.x < -30) {
-            petals[i] = createPetal();
-          }
-        }
-        requestAnimationFrame(animate);
-      }
-
-      resize();
-      init();
-      requestAnimationFrame(animate);
-      window.addEventListener('resize', () => { resize(); });
+      resize(); init(); requestAnimationFrame(anim);
+      addEventListener('resize', resize);
     })();
 
     /* ══════════════════════════════════════
-       Tag hover bounce
+       Tag hover
        ══════════════════════════════════════ */
-    document.querySelectorAll('.tag').forEach(tag => {
-      tag.addEventListener('mouseenter', function () {
-        this.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      });
-      tag.addEventListener('mouseleave', function () {
-        this.style.transition = 'all 0.3s ease';
-      });
+    document.querySelectorAll('.tag').forEach(t => {
+      t.addEventListener('mouseenter', function() { this.style.transition = 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)'; });
+      t.addEventListener('mouseleave', function() { this.style.transition = 'all 0.3s ease'; });
     });
 
     /* ══════════════════════════════════════
-       Live Spotify via Lanyard (with debug)
+       Spotify PKCE — Now Playing
        ══════════════════════════════════════ */
 
-    const DISCORD_USER_ID = '1293118311894089733';
+    const SPOTIFY_CLIENT_ID = '030425b6f52a4c11968bdf8af42facd8';
+    const REDIRECT_URI = 'https://ohrainy.github.io/';
+    const SCOPES = 'user-read-currently-playing user-read-playback-state';
+    const TOKEN_KEY = 'spotify_token_data';
 
+    const npArea = document.getElementById('np-area');
     const npContainer = document.getElementById('np-container');
     const npArt = document.getElementById('np-art');
     const npInfo = document.getElementById('np-info');
 
-    function setError(message) {
-      npContainer.className = 'now-playing idle';
-      npArt.innerHTML = '<div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>';
-      npInfo.innerHTML = `
-        <div class="np-label error-label"><span class="np-dot"></span><span>Error</span></div>
-        <div class="np-idle-text">${message}</div>
-      `;
-    }
-
-    function setIdle(message) {
-      npContainer.className = 'now-playing idle';
-      npArt.innerHTML = '<div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>';
-      npInfo.innerHTML = `
-        <div class="np-label idle-label"><span class="np-dot"></span><span>Not listening</span></div>
-        <div class="np-idle-text">${message}</div>
-      `;
-    }
-
-    function setActive(song, artist, image, isPlaying, startTs, endTs) {
-      npContainer.className = 'now-playing active';
-
-      if (image) {
-        npArt.innerHTML = '<img src="' + image + '" alt="Album Art">';
-      } else {
-        npArt.innerHTML = '<div class="np-bars ' + (isPlaying ? '' : 'paused') + '"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>';
-      }
-
-      const elapsed = isPlaying ? (Date.now() - startTs) : 0;
-      const duration = endTs - startTs;
-      const pct = isPlaying ? Math.min((elapsed / duration) * 100, 100) : 0;
-
-      npInfo.innerHTML = `
-        <div class="np-label">
-          <span class="np-dot"></span>
-          <span>${isPlaying ? 'Listening to' : 'Paused'}</span>
-        </div>
-        <div class="np-song">${song}</div>
-        <div class="np-artist">${artist}</div>
-        ${isPlaying ? '<div class="np-progress-wrap"><div class="np-progress-bar" style="width:' + pct + '%"></div></div>' : ''}
-      `;
-
-      if (isPlaying) startProgress(startTs, duration);
-    }
-
     let progressTimer = null;
 
-    function startProgress(startTs, duration) {
-      if (progressTimer) clearInterval(progressTimer);
-      const bar = npContainer.querySelector('.np-progress-bar');
-      if (!bar) return;
+    /* ── PKCE helpers ── */
+    function generateRandomString(length) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+      const arr = new Uint8Array(length);
+      crypto.getRandomValues(arr);
+      return Array.from(arr, b => chars[b % chars.length]).join('');
+    }
 
+    async function sha256(plain) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(plain);
+      return crypto.subtle.digest('SHA-256', data);
+    }
+
+    function base64encode(input) {
+      const bytes = new Uint8Array(input);
+      let str = '';
+      bytes.forEach(b => str += String.fromCharCode(b));
+      return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    /* ── Show states ── */
+    function showConnect() {
+      npArea.innerHTML = `
+        <button class="spotify-connect" onclick="startAuth()">
+          <i class="fa-brands fa-spotify"></i>
+          Connect Spotify
+        </button>
+      `;
+    }
+
+    function showIdle(msg) {
+      npArea.innerHTML = `
+        <div class="now-playing" id="np-container">
+          <div class="np-art">
+            <div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>
+          </div>
+          <div class="np-info">
+            <div class="np-label idle-label"><span class="np-dot"></span><span>Not listening</span></div>
+            <div class="np-idle-text">${msg}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function showTrack(song, artist, image, isPlaying, progressMs, durationMs) {
+      const pct = (isPlaying && durationMs > 0) ? Math.min((progressMs / durationMs) * 100, 100) : 0;
+
+      npArea.innerHTML = `
+        <div class="now-playing active" id="np-container">
+          <div class="np-art">
+            ${image ? `<img src="${image}" alt="Album Art">` :
+              `<div class="np-bars ${isPlaying ? '' : 'paused'}"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>`}
+          </div>
+          <div class="np-info">
+            <div class="np-label">
+              <span class="np-dot"></span>
+              <span>${isPlaying ? 'Listening to' : 'Paused'}</span>
+            </div>
+            <div class="np-song">${song}</div>
+            <div class="np-artist">${artist}</div>
+            ${isPlaying ? `<div class="np-progress-wrap"><div class="np-progress-bar" id="np-bar" style="width:${pct}%"></div></div>` : ''}
+          </div>
+        </div>
+      `;
+
+      if (isPlaying) startProgress(progressMs, durationMs);
+    }
+
+    function startProgress(progressMs, durationMs) {
+      if (progressTimer) clearInterval(progressTimer);
+      const bar = document.getElementById('np-bar');
+      if (!bar) return;
+      const startTime = Date.now() - progressMs;
       progressTimer = setInterval(() => {
-        const elapsed = Date.now() - startTs;
-        const pct = Math.min((elapsed / duration) * 100, 100);
+        const elapsed = Date.now() - startTime;
+        const pct = Math.min((elapsed / durationMs) * 100, 100);
         bar.style.width = pct + '%';
         if (pct >= 100) clearInterval(progressTimer);
       }, 1000);
     }
 
-    async function fetchLanyard() {
-      try {
-        const res = await fetch('https://api.lanyard.rest/v1/users/' + DISCORD_USER_ID);
+    /* ── Auth flow ── */
+    async function startAuth() {
+      const verifier = generateRandomString(64);
+      sessionStorage.setItem('pkce_verifier', verifier);
+      const hash = await sha256(verifier);
+      const challenge = base64encode(hash);
+      const params = new URLSearchParams({
+        response_type: 'code',
+        client_id: SPOTIFY_CLIENT_ID,
+        scope: SCOPES,
+        code_challenge_method: 'S256',
+        code_challenge: challenge,
+        redirect_uri: REDIRECT_URI
+      });
+      window.location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
+    }
 
-        // API returned an error
-        if (res.status === 404) {
-          setError('User not found. Did you join discord.gg/lanyard ?');
+    /* ── Exchange code for tokens ── */
+    async function exchangeCode(code) {
+      const verifier = sessionStorage.getItem('pkce_verifier');
+      if (!verifier) return null;
+
+      const res = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: REDIRECT_URI,
+          client_id: SPOTIFY_CLIENT_ID,
+          code_verifier: verifier
+        })
+      });
+
+      if (!res.ok) return null;
+      const data = await res.json();
+      data.expires_at = Date.now() + data.expires_in * 1000;
+      localStorage.setItem(TOKEN_KEY, JSON.stringify(data));
+      sessionStorage.removeItem('pkce_verifier');
+      return data;
+    }
+
+    /* ── Refresh token ── */
+    async function refreshToken() {
+      const stored = JSON.parse(localStorage.getItem(TOKEN_KEY));
+      if (!stored || !stored.refresh_token) return null;
+
+      const res = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: stored.refresh_token,
+          client_id: SPOTIFY_CLIENT_ID
+        })
+      });
+
+      if (!res.ok) {
+        localStorage.removeItem(TOKEN_KEY);
+        return null;
+      }
+
+      const data = await res.json();
+      data.refresh_token = data.refresh_token || stored.refresh_token;
+      data.expires_at = Date.now() + data.expires_in * 1000;
+      localStorage.setItem(TOKEN_KEY, JSON.stringify(data));
+      return data;
+    }
+
+    /* ── Get valid token ── */
+    async function getToken() {
+      const stored = JSON.parse(localStorage.getItem(TOKEN_KEY));
+
+      if (stored && stored.access_token && stored.expires_at > Date.now()) {
+        return stored.access_token;
+      }
+
+      if (stored && stored.refresh_token) {
+        const refreshed = await refreshToken();
+        return refreshed ? refreshed.access_token : null;
+      }
+
+      return null;
+    }
+
+    /* ── Fetch now playing ── */
+    async function fetchNowPlaying() {
+      const token = await getToken();
+
+      if (!token) {
+        showConnect();
+        return;
+      }
+
+      try {
+        const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (res.status === 204) {
+          showIdle('Nothing playing right now');
           return;
+        }
+
+        if (res.status === 401) {
+          const refreshed = await refreshToken();
+          if (!refreshed) { showConnect(); return; }
+          return fetchNowPlaying();
         }
 
         if (!res.ok) {
-          setError('API error (' + res.status + '). Try again later.');
+          showIdle('Could not load track');
           return;
         }
 
-        const json = await res.json();
+        const data = await res.json();
+        const song = data.item.name;
+        const artist = data.item.artists.map(a => a.name).join(', ');
+        const image = data.item.album.images[data.item.album.images.length - 1]?.url || '';
+        const isPlaying = data.is_playing;
+        const progress = data.progress_ms;
+        const duration = data.item.duration_ms;
 
-        if (!json.success || !json.data) {
-          setError('Lanyard returned invalid data.');
-          return;
-        }
-
-        const d = json.data;
-
-        // User found but not in Lanyard server
-        if (!d.discord_user) {
-          setError('Not detected by Lanyard. Join discord.gg/lanyard');
-          return;
-        }
-
-        const spotify = d.spotify;
-        const listening = d.listening_to_spotify;
-
-        if (listening && spotify) {
-          setActive(
-            spotify.song,
-            spotify.artist,
-            spotify.album_art_url,
-            true,
-            spotify.timestamps.start,
-            spotify.timestamps.end
-          );
-        } else if (spotify && !listening) {
-          setActive(
-            spotify.song,
-            spotify.artist,
-            spotify.album_art_url,
-            false,
-            0,
-            1
-          );
-        } else {
-          // Check if Spotify is even connected
-          const hasSpotify = d.activities && d.activities.some(a => a.type === 2);
-          if (!hasSpotify) {
-            setIdle('Nothing playing. Make sure Spotify is connected in Discord settings.');
-          } else {
-            setIdle('Nothing playing right now');
-          }
-        }
+        showTrack(song, artist, image, isPlaying, progress, duration);
       } catch (e) {
-        setError('Could not connect to Lanyard.');
+        showIdle('Could not connect to Spotify');
       }
     }
 
-    // Initial fetch
-    fetchLanyard();
+    /* ── Init ── */
+    async function init() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
 
-    // Poll every 15 seconds
-    setInterval(fetchLanyard, 15000);
+      if (code) {
+        // Spotify redirected back with auth code
+        window.history.replaceState({}, document.title, REDIRECT_URI);
+        await exchangeCode(code);
+      }
 
-    // WebSocket for instant updates
-    try {
-      const ws = new WebSocket('wss://api.lanyard.rest/socket');
+      await fetchNowPlaying();
 
-      ws.addEventListener('open', () => {
-        ws.send(JSON.stringify({
-          op: 2,
-          d: { subscribe_to_id: DISCORD_USER_ID }
-        }));
-      });
-
-      ws.addEventListener('message', (event) => {
-        try {
-          const msg = JSON.parse(event.data);
-          // Hello message (op 1) — ignore
-          if (msg.op === 1) return;
-          // Event (op 0) — refresh data
-          if (msg.op === 0) fetchLanyard();
-        } catch (e) {}
-      });
-
-      ws.addEventListener('close', () => {
-        // WebSocket closed, polling will handle it
-      });
-    } catch (e) {
-      // WebSocket not supported, polling is the fallback
+      // Poll every 5 seconds
+      setInterval(fetchNowPlaying, 5000);
     }
+
+    init();
   </script>
 </body>
 </html>
