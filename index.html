@@ -1,198 +1,314 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✦ Edd</title>
-  <link rel="pre-content" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg-deep: #0c0a1a;
-      --bg-card: rgba(20, 16, 40, 0.75);
-      --bg-card-solid: #141028;
-      --fg: #f0e8f8;
-      --fg-muted: #9b8fb8;
-      --accent: #ff7eb3;
-      --accent-glow: rgba(255, 126, 179, 0.35);
-      --accent2: #7ec8ff;
-      --accent2-glow: rgba(126, 200, 255, 0.25);
-      --sakura: #ffb7d5;
-      --border: rgba(255, 126, 179, 0.15);
-      --card-radius: 24px;
-      --spotify-green: #1db954;
-      --heart-core: #ff5c8a;
-      --heart-soft: #ff8ab5;
-      --heart-glow: rgba(255, 92, 138, 0.3);
+--heart-core: #ff5c8a;
+--heart-soft: #ff8ab5;
+--heart-glow: rgba(255, 92, 138, 0.3);
       --pre-star: #ffd660;
       --pre-star-glow: rgba(255, 214, 96, 0.25);
       --pre-purple: #c084fc;
       --pre-purple-glow: rgba(192, 132, 252, 0.3);
-    }
+}
 
-    html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
+@@ -43,463 +47,244 @@
+position: relative;
+}
 
-    body {
-      font-family: 'Quicksand', sans-serif;
-      background: var(--bg-deep);
-      color: var(--fg);
-      min-height: 100vh;
+    /* ══════════════════════════════════════
+       Pre-Page Overlay
+       ══════════════════════════════════════ */
+    /* ═══ Pre-Page ═══ */
+.pre-page {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* ═══ Pre-Page ═══ */
-    .pre-page {
       position: fixed; inset: 0; z-index: 1000;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: var(--bg-deep);
-      transition: opacity 0.8s ease, filter 0.8s ease;
-    }
+background: var(--bg-deep);
+transition: opacity 0.8s ease, filter 0.8s ease;
+}
     .pre-page.leaving { opacity: 0; filter: blur(20px); pointer-events: none; }
     .pre-page.gone { display: none; }
 
+    .pre-page.leaving {
+      opacity: 0;
+      filter: blur(20px);
+      pointer-events: none;
     .pre-bg-glow {
-      position: absolute; width: 500px; height: 500px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(192,132,252,0.07), transparent 70%);
+      position: absolute; width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(192,132,252,0.06), transparent 70%);
       filter: blur(80px);
       animation: preDrift 10s ease-in-out infinite alternate;
-    }
+}
+
+    .pre-page.gone {
+      display: none;
     .pre-bg-glow.g2 {
-      width: 350px; height: 350px;
+      width: 280px; height: 280px;
       background: radial-gradient(circle, rgba(255,126,179,0.05), transparent 70%);
       animation-delay: -5s;
-    }
+}
     @keyframes preDrift { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, -15px); } }
+
+    .pre-bg-glow {
+      position: absolute;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,126,179,0.1), transparent 70%);
+      filter: blur(60px);
+      animation: preFloat 6s ease-in-out infinite alternate;
+    .pre-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      max-width: 360px;
+      padding: 0 20px;
+}
+
+    .pre-bg-glow.g2 {
+      width: 250px; height: 250px;
+      background: radial-gradient(circle, rgba(126,200,255,0.08), transparent 70%);
+      animation-delay: -3s;
+    .pre-icon-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; margin-bottom: 32px;
+      opacity: 0; animation: preFadeIn 0.8s ease both 0.2s;
+}
+
+    @keyframes preFloat {
+      0% { transform: translate(-30px, 20px); }
+      100% { transform: translate(30px, -20px); }
+    .pre-line {
+      width: 32px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--pre-star), transparent);
+      opacity: 0.4;
+}
 
     .pre-content {
       position: relative; z-index: 2;
       text-align: center;
-      width: 100%;
-      max-width: 420px;
-      padding: 0 24px;
-    }
-
-    .pre-icon-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 16px; margin-bottom: 36px;
-      opacity: 0; animation: preFadeIn 0.8s ease both 0.2s;
-    }
-
-    .pre-line {
-      width: 40px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--pre-star), transparent);
-      opacity: 0.4;
-    }
-
     .pre-star {
-      font-size: 1.3rem;
+      font-size: 1.15rem;
       color: var(--pre-star);
-      filter: drop-shadow(0 0 14px var(--pre-star-glow));
+      filter: drop-shadow(0 0 12px var(--pre-star-glow));
       animation: starBreathe 4s ease-in-out infinite;
-    }
+}
 
+    .pre-heart {
+      font-size: 2rem;
+      color: var(--heart-core);
+      animation: heartBeat 1.4s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px var(--heart-glow));
+      margin-bottom: 24px;
     @keyframes starBreathe {
       0%, 100% { opacity: 0.7; transform: scale(1); }
       50% { opacity: 1; transform: scale(1.1); }
-    }
+}
 
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.2); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.12); }
+      60% { transform: scale(1); }
     .pre-welcome {
-      font-size: 0.75rem; color: var(--fg-muted);
-      letter-spacing: 5px; text-transform: uppercase;
-      font-weight: 500; margin-bottom: 14px;
+      font-size: 0.7rem; color: var(--fg-muted);
+      letter-spacing: 4px; text-transform: uppercase;
+      font-weight: 500; margin-bottom: 12px;
       opacity: 0; animation: preFadeIn 0.8s ease both 0.5s;
-    }
+}
 
+    .pre-name {
     .pre-edds {
-      font-family: 'Zen Maru Gothic', sans-serif;
-      font-weight: 900; font-size: 2.8rem;
+font-family: 'Zen Maru Gothic', sans-serif;
+      font-weight: 900;
+      font-size: 2.4rem;
+      background: linear-gradient(135deg, var(--fg) 30%, var(--sakura) 60%, var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900; font-size: 2.4rem;
       background: linear-gradient(135deg, #c084fc 0%, #a855f7 30%, #e0b0ff 60%, #c084fc 100%);
       background-size: 200% 200%;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+background-clip: text;
+      margin-bottom: 8px;
+      animation: preFadeIn 1s ease both 0.3s;
       animation: purpleShimmer 4s ease-in-out infinite;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       opacity: 0;
       animation: preFadeIn 0.8s ease both 0.7s, purpleShimmer 4s ease-in-out infinite;
-      line-height: 1.2;
     }
 
     @keyframes purpleShimmer {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
-    }
+}
 
-    .pre-subtitle {
-      font-size: 0.78rem; color: var(--fg-muted);
-      letter-spacing: 5px; text-transform: uppercase;
-      font-weight: 600; margin-bottom: 48px;
+.pre-subtitle {
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: preFadeIn 1s ease both 0.6s;
+      font-size: 0.72rem; color: var(--fg-muted);
+      letter-spacing: 4px; text-transform: uppercase;
+      font-weight: 600; margin-bottom: 44px;
       opacity: 0; animation: preFadeIn 0.8s ease both 0.85s;
-    }
+}
 
-    @keyframes preFadeIn {
+@keyframes preFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
       from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+to { opacity: 1; transform: translateY(0); }
+}
 
-    .pre-enter-btn {
+.pre-enter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 42px;
+      border-radius: 50px;
       display: inline-flex; align-items: center; gap: 10px;
-      padding: 15px 48px; border-radius: 50px;
-      border: 1px solid var(--border);
+      padding: 14px 42px; border-radius: 50px;
+border: 1px solid var(--border);
+      background: rgba(255,126,179,0.06);
+      color: var(--fg);
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
       background: rgba(192,132,252,0.03);
       color: var(--fg); font-family: 'Quicksand', sans-serif;
       font-size: 0.85rem; font-weight: 700; letter-spacing: 2px;
       text-transform: uppercase; cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: preFadeIn 1s ease both 0.9s;
       position: relative; overflow: hidden;
       opacity: 0; animation: preFadeIn 0.8s ease both 1.05s;
-    }
-    .pre-enter-btn::before {
+}
+
+.pre-enter-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,126,179,0.15), rgba(126,200,255,0.08));
+      opacity: 0;
+      transition: opacity 0.3s;
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(135deg, rgba(192,132,252,0.08), rgba(255,126,179,0.05));
       opacity: 0; transition: opacity 0.3s;
+}
+
+.pre-enter-btn:hover::before { opacity: 1; }
+
+.pre-enter-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 8px 32px var(--accent-glow), 0 0 60px rgba(255,126,179,0.1);
     }
-    .pre-enter-btn:hover::before { opacity: 1; }
-    .pre-enter-btn:hover {
+
+    .pre-enter-btn:active {
+      transform: translateY(0) scale(0.98);
+      transition-duration: 0.1s;
+    }
+
+    .pre-enter-btn i {
+      font-size: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    .pre-enter-btn:hover i {
+      transform: translateX(3px);
+    }
+
+    /* Pre-page floating particles */
+    .pre-particles {
+      position: absolute; inset: 0;
+      pointer-events: none; overflow: hidden;
       border-color: rgba(192,132,252,0.4);
       transform: translateY(-2px);
       box-shadow: 0 6px 28px rgba(192,132,252,0.12);
-    }
+}
     .pre-enter-btn:active { transform: translateY(0) scale(0.98); transition-duration: 0.1s; }
     .pre-enter-btn i { font-size: 0.7rem; transition: transform 0.3s ease; }
     .pre-enter-btn:hover i { transform: translateX(3px); }
 
     .pre-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-    .pre-particle {
+.pre-particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: var(--sakura);
+      opacity: 0;
       position: absolute; width: 2px; height: 2px; border-radius: 50%;
       background: var(--pre-star); opacity: 0;
-      animation: preParticleFloat linear infinite;
-    }
-    @keyframes preParticleFloat {
-      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+animation: preParticleFloat linear infinite;
+}
+
+@keyframes preParticleFloat {
+0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.4; }
+      90% { opacity: 0.2; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
       10% { opacity: 0.3; } 90% { opacity: 0.1; }
       100% { transform: translateY(-10vh) scale(0.8); opacity: 0; }
-    }
+}
 
+    /* ══════════════════════════════════════
+       Main Content (blurred behind pre-page)
+       ══════════════════════════════════════ */
     /* ═══ Main Content ═══ */
-    .main-content {
+.main-content {
+      filter: blur(12px);
+      opacity: 0.3;
+      filter: blur(12px); opacity: 0.3;
+transition: filter 1s ease 0.3s, opacity 1s ease 0.3s;
       width: 100%;
-      max-width: 440px;
-      padding: 0 20px;
-      transition: filter 1s ease 0.3s, opacity 1s ease 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
+    .main-content.visible {
+      filter: blur(0);
+      opacity: 1;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+}
     .main-content.visible { filter: blur(0); opacity: 1; }
-    .main-content.blurred { filter: blur(12px); opacity: 0.3; }
 
-    .stars-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    #sakura-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+.stars-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+#sakura-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
+    .ambient-glow {
+      position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0;
+    }
+    .ambient-glow.g1 {
+      width: 500px; height: 500px; top: -10%; left: -8%;
+      background: radial-gradient(circle, rgba(255,126,179,0.12), transparent 70%);
+    }
+    .ambient-glow.g2 {
+      width: 450px; height: 450px; bottom: -8%; right: -5%;
+      background: radial-gradient(circle, rgba(126,200,255,0.1), transparent 70%);
+    }
+    .ambient-glow.g3 {
+      width: 300px; height: 300px; top: 40%; left: 60%;
+      background: radial-gradient(circle, rgba(200,160,255,0.07), transparent 70%);
+      animation: floatGlow 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatGlow {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-40px, 30px) scale(1.15); }
+    }
     .ambient-glow { position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
     .ambient-glow.g1 { width: 500px; height: 500px; top: -10%; left: -8%; background: radial-gradient(circle, rgba(255,126,179,0.12), transparent 70%); }
     .ambient-glow.g2 { width: 450px; height: 450px; bottom: -8%; right: -5%; background: radial-gradient(circle, rgba(126,200,255,0.1), transparent 70%); }
@@ -200,167 +316,420 @@
     @keyframes floatGlow { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-40px, 30px) scale(1.15); } }
 
     .card-wrapper {
-      position: relative; z-index: 10; width: 100%;
+      position: relative; z-index: 10;
+      width: 100%; max-width: 440px;
+      padding: 20px;
     }
+    .card-wrapper { position: relative; z-index: 10; width: 100%; max-width: 440px; padding: 20px; }
 
-    .card {
-      background: var(--bg-card);
-      backdrop-filter: blur(24px) saturate(1.4);
-      -webkit-backdrop-filter: blur(24px) saturate(1.4);
+.card {
+background: var(--bg-card);
+backdrop-filter: blur(24px) saturate(1.4);
+-webkit-backdrop-filter: blur(24px) saturate(1.4);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 40px 32px 36px;
+      position: relative;
+      overflow: hidden;
       border: 1px solid var(--border); border-radius: var(--card-radius);
       padding: 40px 32px 36px; position: relative; overflow: hidden;
-      animation: cardIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+animation: cardIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+    @keyframes cardIn {
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
     @keyframes cardIn { 0% { opacity: 0; transform: translateY(30px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
-    .card::before {
+.card::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
       content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 60%; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-      opacity: 0.7;
-    }
-    .card::after {
+width: 60%; height: 2px;
+background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+opacity: 0.7;
+}
+
+.card::after {
+      content: '';
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
       content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, var(--accent-glow), transparent 70%);
-      opacity: 0.3; pointer-events: none;
+width: 200px; height: 200px;
+background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+opacity: 0.3; pointer-events: none;
+}
+
+    .avatar-section {
+      display: flex; flex-direction: column; align-items: center;
+      margin-bottom: 24px; position: relative; z-index: 2;
+    }
+
+    .avatar-ring {
+      width: 120px; height: 120px; border-radius: 50%; padding: 4px;
+      background: conic-gradient(var(--accent), var(--accent2), var(--sakura), var(--accent));
+      animation: ringRotate 6s linear infinite;
+      margin-bottom: 18px; position: relative;
+    }
+
+    .avatar-ring::after {
+      content: ''; position: absolute; inset: -6px; border-radius: 50%;
+      background: conic-gradient(var(--accent), var(--accent2), var(--sakura), var(--accent));
+      filter: blur(12px); opacity: 0.35; z-index: -1;
     }
 
     .avatar-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; position: relative; z-index: 2; }
     .avatar-ring { width: 120px; height: 120px; border-radius: 50%; padding: 4px; background: conic-gradient(var(--accent), var(--accent2), var(--sakura), var(--accent)); animation: ringRotate 6s linear infinite; margin-bottom: 18px; position: relative; }
     .avatar-ring::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; background: conic-gradient(var(--accent), var(--accent2), var(--sakura), var(--accent)); filter: blur(12px); opacity: 0.35; z-index: -1; }
-    @keyframes ringRotate { to { transform: rotate(360deg); } }
+@keyframes ringRotate { to { transform: rotate(360deg); } }
+
+    .avatar-img {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: var(--bg-card-solid);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px; color: var(--accent);
+      border: 3px solid var(--bg-deep); overflow: hidden;
+    }
 
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-card-solid); display: flex; align-items: center; justify-content: center; font-size: 42px; color: var(--accent); border: 3px solid var(--bg-deep); overflow: hidden; }
-    .avatar-img img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .display-name {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-weight: 900; font-size: 1.65rem;
+      background: linear-gradient(135deg, var(--fg) 30%, var(--sakura) 60%, var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: 0.5px;
+    }
 
     .display-name { font-family: 'Zen Maru Gothic', sans-serif; font-weight: 900; font-size: 1.65rem; background: linear-gradient(135deg, var(--fg) 30%, var(--sakura) 60%, var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.5px; }
-    .username { color: var(--fg-muted); font-size: 0.88rem; font-weight: 500; margin-top: 2px; }
+.username { color: var(--fg-muted); font-size: 0.88rem; font-weight: 500; margin-top: 2px; }
     .pronouns { display: inline-block; font-size: 0.72rem; font-weight: 600; color: var(--accent); background: rgba(255,126,179,0.1); border: 1px solid rgba(255,126,179,0.2); border-radius: 20px; padding: 2px 12px; margin-top: 8px; }
 
+    .pronouns {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      color: var(--accent); background: rgba(255,126,179,0.1);
+      border: 1px solid rgba(255,126,179,0.2);
+      border-radius: 20px; padding: 2px 12px; margin-top: 8px;
+    }
+
+    .divider {
+      height: 1px; margin: 20px 0;
+      background: linear-gradient(90deg, transparent, var(--border), rgba(126,200,255,0.12), var(--border), transparent);
+      position: relative; z-index: 2;
+    }
+
+    .bio {
+      text-align: center; font-size: 0.9rem; line-height: 1.65;
+      color: var(--fg-muted); font-weight: 400;
+      position: relative; z-index: 2; max-width: 340px; margin: 0 auto;
+    }
     .divider { height: 1px; margin: 20px 0; background: linear-gradient(90deg, transparent, var(--border), rgba(126,200,255,0.12), var(--border), transparent); position: relative; z-index: 2; }
 
     .bio { text-align: center; font-size: 0.9rem; line-height: 1.65; color: var(--fg-muted); font-weight: 400; position: relative; z-index: 2; max-width: 340px; margin: 0 auto; }
-    .bio em { color: var(--sakura); font-style: normal; font-weight: 600; }
+.bio em { color: var(--sakura); font-style: normal; font-weight: 600; }
 
+    .love-section {
+      position: relative; z-index: 2;
+      text-align: center; padding: 6px 0 2px;
+    }
+
+    .love-heart-wrap {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .love-heart {
+      font-size: 1.3rem; color: var(--heart-core);
+      animation: heartBeat 1.4s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px var(--heart-glow));
+    }
+
+    .love-heart-ring {
+      position: absolute; width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--heart-soft); opacity: 0;
+      animation: heartRing 1.4s ease-out infinite;
+    }
     .love-section { position: relative; z-index: 2; text-align: center; padding: 6px 0 2px; }
     .love-heart-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; }
     .love-heart { font-size: 1.3rem; color: var(--heart-core); animation: heartBeat 1.4s ease-in-out infinite; filter: drop-shadow(0 0 8px var(--heart-glow)); }
     .love-heart-ring { position: absolute; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--heart-soft); opacity: 0; animation: heartRing 1.4s ease-out infinite; }
-    .love-heart-ring:nth-child(2) { animation-delay: 0.3s; }
-    .love-heart-ring:nth-child(3) { animation-delay: 0.6s; }
+.love-heart-ring:nth-child(2) { animation-delay: 0.3s; }
+.love-heart-ring:nth-child(3) { animation-delay: 0.6s; }
     @keyframes heartBeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.25); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } 60% { transform: scale(1); } }
     @keyframes heartRing { 0% { transform: scale(0.5); opacity: 0.6; } 100% { transform: scale(2.2); opacity: 0; } }
 
+    @keyframes heartRing {
+      0% { transform: scale(0.5); opacity: 0.6; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    .love-label {
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 3px;
+      color: var(--heart-soft); font-weight: 600;
+      margin-bottom: 10px; opacity: 0.8;
+    }
     .love-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 3px; color: var(--heart-soft); font-weight: 600; margin-bottom: 10px; opacity: 0.8; }
 
-    .emmi-name-wrap { display: inline-block; position: relative; }
+.emmi-name-wrap { display: inline-block; position: relative; }
+
+    .emmi-name {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-weight: 900; font-size: 2rem; display: inline-block;
+      background: linear-gradient(135deg, #ff5c8a 0%, #ff8ab5 15%, #ffc2d9 30%, #fff0f5 45%, #ffc2d9 55%, #ff8ab5 70%, #ff5c8a 85%, #ff8ab5 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; animation: emmiShimmer 3s ease-in-out infinite;
+      letter-spacing: 1px; position: relative; padding-bottom: 4px;
+    }
+
+    .emmi-underline {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--heart-core), var(--heart-soft), var(--heart-core), transparent);
+      background-size: 200% 100%; animation: underlineSlide 2.5s ease-in-out infinite; border-radius: 2px;
+    }
+
+    .emmi-underline-glow {
+      position: absolute; bottom: -2px; left: 10%; right: 10%; height: 6px;
+      background: var(--heart-core); filter: blur(6px); opacity: 0.4;
+      animation: underlineSlide 2.5s ease-in-out infinite; border-radius: 6px;
+    }
+
     .emmi-name { font-family: 'Zen Maru Gothic', sans-serif; font-weight: 900; font-size: 2rem; display: inline-block; background: linear-gradient(135deg, #ff5c8a 0%, #ff8ab5 15%, #ffc2d9 30%, #fff0f5 45%, #ffc2d9 55%, #ff8ab5 70%, #ff5c8a 85%, #ff8ab5 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: emmiShimmer 3s ease-in-out infinite; letter-spacing: 1px; position: relative; padding-bottom: 4px; }
     .emmi-underline { position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--heart-core), var(--heart-soft), var(--heart-core), transparent); background-size: 200% 100%; animation: underlineSlide 2.5s ease-in-out infinite; border-radius: 2px; }
     .emmi-underline-glow { position: absolute; bottom: -2px; left: 10%; right: 10%; height: 6px; background: var(--heart-core); filter: blur(6px); opacity: 0.4; animation: underlineSlide 2.5s ease-in-out infinite; border-radius: 6px; }
-    @keyframes emmiShimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-    @keyframes underlineSlide { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
+@keyframes emmiShimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes underlineSlide { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
 
+    .love-message {
+      font-size: 0.76rem; color: var(--fg-muted); font-weight: 500;
+      margin-top: 10px; line-height: 1.7; opacity: 0.75;
+    }
     .love-message { font-size: 0.76rem; color: var(--fg-muted); font-weight: 500; margin-top: 10px; line-height: 1.7; opacity: 0.75; }
-    .love-message .line1 { color: var(--heart-soft); font-weight: 600; display: block; }
-    .love-message .line2 { display: block; opacity: 0.85; }
-    .love-message .line3 { display: block; opacity: 0.85; }
+.love-message .line1 { color: var(--heart-soft); font-weight: 600; display: block; }
+.love-message .line2 { display: block; opacity: 0.85; }
+.love-message .line3 { display: block; opacity: 0.85; }
+    .love-message .heart-icon {
+      color: var(--heart-core); font-size: 0.6rem;
+      animation: heartBeat 1.4s ease-in-out infinite; vertical-align: middle;
+    }
     .love-message .heart-icon { color: var(--heart-core); font-size: 0.6rem; animation: heartBeat 1.4s ease-in-out infinite; vertical-align: middle; }
 
-    .mini-hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.mini-hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .mini-heart {
+      position: absolute; color: var(--heart-soft); font-size: 0.5rem; opacity: 0;
+      animation: floatHeart 4s ease-in infinite;
+    }
     .mini-heart { position: absolute; color: var(--heart-soft); font-size: 0.5rem; opacity: 0; animation: floatHeart 4s ease-in infinite; }
-    .mini-heart:nth-child(1) { left: 15%; animation-delay: 0s; }
-    .mini-heart:nth-child(2) { left: 35%; animation-delay: 0.8s; }
-    .mini-heart:nth-child(3) { left: 55%; animation-delay: 1.6s; }
-    .mini-heart:nth-child(4) { left: 75%; animation-delay: 2.4s; }
-    .mini-heart:nth-child(5) { left: 45%; animation-delay: 3.2s; }
-    .mini-heart:nth-child(6) { left: 25%; animation-delay: 1.2s; }
-    .mini-heart:nth-child(7) { left: 65%; animation-delay: 2s; }
+.mini-heart:nth-child(1) { left: 15%; animation-delay: 0s; }
+.mini-heart:nth-child(2) { left: 35%; animation-delay: 0.8s; }
+.mini-heart:nth-child(3) { left: 55%; animation-delay: 1.6s; }
+.mini-heart:nth-child(4) { left: 75%; animation-delay: 2.4s; }
+.mini-heart:nth-child(5) { left: 45%; animation-delay: 3.2s; }
+.mini-heart:nth-child(6) { left: 25%; animation-delay: 1.2s; }
+.mini-heart:nth-child(7) { left: 65%; animation-delay: 2s; }
     @keyframes floatHeart { 0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; } 15% { opacity: 0.5; } 50% { opacity: 0.3; } 100% { transform: translateY(-50px) scale(0.2) rotate(-15deg); opacity: 0; } }
 
+    @keyframes floatHeart {
+      0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.5; } 50% { opacity: 0.3; }
+      100% { transform: translateY(-50px) scale(0.2) rotate(-15deg); opacity: 0; }
+    }
+
+    .tags {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+      position: relative; z-index: 2;
+    }
+
+    .tag {
+      font-size: 0.74rem; font-weight: 600; padding: 5px 14px; border-radius: 20px;
+      border: 1px solid var(--border); background: rgba(255,126,179,0.05);
+      color: var(--fg-muted); transition: all 0.3s ease; cursor: default;
+    }
+    .tag:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: rgba(255,126,179,0.1); transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+    .tag.blue:hover {
+      border-color: var(--accent2); color: var(--accent2);
+      background: rgba(126,200,255,0.1); box-shadow: 0 4px 16px var(--accent2-glow);
+    }
     .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; position: relative; z-index: 2; }
     .tag { font-size: 0.74rem; font-weight: 600; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: rgba(255,126,179,0.05); color: var(--fg-muted); transition: all 0.3s ease; cursor: default; }
     .tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(255,126,179,0.1); transform: translateY(-2px); box-shadow: 0 4px 16px var(--accent-glow); }
     .tag.blue:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(126,200,255,0.1); box-shadow: 0 4px 16px var(--accent2-glow); }
 
+    .section-title {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2.5px;
+      color: var(--accent); text-align: center;
+      margin-bottom: 14px; position: relative; z-index: 2;
+    }
     .section-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--accent); text-align: center; margin-bottom: 14px; position: relative; z-index: 2; }
-    .section-title i { margin-right: 6px; font-size: 0.68rem; }
+.section-title i { margin-right: 6px; font-size: 0.68rem; }
 
+    .socials {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      position: relative; z-index: 2;
+    }
+
+    .social-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 14px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+      text-decoration: none; color: var(--fg-muted);
+      font-size: 0.8rem; font-weight: 600;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .social-link::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,126,179,0.08), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
     .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: relative; z-index: 2; }
     .social-link { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); text-decoration: none; color: var(--fg-muted); font-size: 0.8rem; font-weight: 600; transition: all 0.3s ease; position: relative; overflow: hidden; }
     .social-link::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,126,179,0.08), transparent); opacity: 0; transition: opacity 0.3s; }
-    .social-link:hover::before { opacity: 1; }
+.social-link:hover::before { opacity: 1; }
+    .social-link:hover {
+      border-color: var(--accent); color: var(--fg);
+      transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+    }
     .social-link:hover { border-color: var(--accent); color: var(--fg); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
-    .social-link i { font-size: 1rem; width: 20px; text-align: center; transition: color 0.3s; }
-    .social-link:hover i { color: var(--accent); }
-    .social-link.full-width { grid-column: 1 / -1; }
-    .social-link.github:hover i { color: #e0e0e0; }
-    .social-link.twitter:hover i { color: #1da1f2; }
-    .social-link.youtube:hover i { color: #ff4444; }
-    .social-link.spotify:hover i { color: #1db954; }
+.social-link i { font-size: 1rem; width: 20px; text-align: center; transition: color 0.3s; }
+.social-link:hover i { color: var(--accent); }
+.social-link.full-width { grid-column: 1 / -1; }
+@@ -508,126 +293,72 @@
+.social-link.youtube:hover i { color: #ff4444; }
+.social-link.spotify:hover i { color: #1db954; }
 
+    .discord-reveal {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 14px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+      color: var(--fg-muted); font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative; z-index: 2;
+      user-select: none; -webkit-user-select: none;
+      height: 44px; overflow: hidden;
+    }
     .discord-reveal { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: var(--fg-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: border-color 0.3s ease, box-shadow 0.3s ease; position: relative; z-index: 2; user-select: none; -webkit-user-select: none; height: 44px; overflow: hidden; }
-    .discord-reveal:hover { border-color: #5865f2; box-shadow: 0 6px 24px rgba(88,101,242,0.15); }
-    .discord-reveal i { font-size: 1rem; width: 20px; text-align: center; color: #5865f2; flex-shrink: 0; }
-    .discord-reveal .text-slot { position: relative; height: 1.2em; overflow: hidden; flex: 1; }
+.discord-reveal:hover { border-color: #5865f2; box-shadow: 0 6px 24px rgba(88,101,242,0.15); }
+.discord-reveal i { font-size: 1rem; width: 20px; text-align: center; color: #5865f2; flex-shrink: 0; }
+.discord-reveal .text-slot { position: relative; height: 1.2em; overflow: hidden; flex: 1; }
+    .discord-reveal .discord-label,
+    .discord-reveal .discord-name { display: block; width: 100%; transition: transform 0.3s ease, opacity 0.3s ease; }
+    .discord-reveal .discord-name {
+      color: var(--fg); font-weight: 700; position: absolute; top: 0; left: 0;
+      transform: translateY(100%); opacity: 0;
+    }
     .discord-reveal .discord-label, .discord-reveal .discord-name { display: block; width: 100%; transition: transform 0.3s ease, opacity 0.3s ease; }
     .discord-reveal .discord-name { color: var(--fg); font-weight: 700; position: absolute; top: 0; left: 0; transform: translateY(100%); opacity: 0; }
-    .discord-reveal.open .discord-label { transform: translateY(-100%); opacity: 0; }
-    .discord-reveal.open .discord-name { transform: translateY(0); opacity: 1; }
+.discord-reveal.open .discord-label { transform: translateY(-100%); opacity: 0; }
+.discord-reveal.open .discord-name { transform: translateY(0); opacity: 1; }
 
+    .now-playing {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; border-radius: 14px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+      position: relative; z-index: 2; transition: all 0.4s ease; min-height: 66px;
+    }
     .now-playing { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 2; transition: all 0.4s ease; min-height: 66px; }
-    .now-playing.active { border-color: rgba(29,185,84,0.25); background: rgba(29,185,84,0.04); }
+.now-playing.active { border-color: rgba(29,185,84,0.25); background: rgba(29,185,84,0.04); }
+
+    .np-art {
+      width: 42px; height: 42px; border-radius: 8px;
+      background: linear-gradient(135deg, #1a3a2a, #0d1f15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
     .np-art { width: 42px; height: 42px; border-radius: 8px; background: linear-gradient(135deg, #1a3a2a, #0d1f15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-    .np-art img { width: 100%; height: 100%; object-fit: cover; }
-    .np-bars { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
+.np-art img { width: 100%; height: 100%; object-fit: cover; }
+
+.np-bars { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
+    .np-bar {
+      width: 3px; border-radius: 2px; background: #1db954;
+      animation: barBounce 0.8s ease-in-out infinite alternate;
+    }
     .np-bar { width: 3px; border-radius: 2px; background: #1db954; animation: barBounce 0.8s ease-in-out infinite alternate; }
-    .np-bar:nth-child(1) { height: 6px; animation-delay: 0s; }
-    .np-bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
-    .np-bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
-    .np-bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
-    @keyframes barBounce { 0% { transform: scaleY(0.4); } 100% { transform: scaleY(1); } }
-    .np-bars.paused .np-bar { animation-play-state: paused; }
-    .np-info { flex: 1; min-width: 0; }
+.np-bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+.np-bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+.np-bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+.np-bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+@keyframes barBounce { 0% { transform: scaleY(0.4); } 100% { transform: scaleY(1); } }
+.np-bars.paused .np-bar { animation-play-state: paused; }
+.np-info { flex: 1; min-width: 0; }
+
+    .np-label {
+      font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--spotify-green); font-weight: 700; margin-bottom: 2px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .np-label .np-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--spotify-green); animation: npPulse 1.5s ease-in-out infinite;
+    }
     .np-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--spotify-green); font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 5px; }
     .np-label .np-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--spotify-green); animation: npPulse 1.5s ease-in-out infinite; }
-    @keyframes npPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
-    .np-label.idle-label { color: var(--fg-muted); }
-    .np-label.idle-label .np-dot { background: var(--fg-muted); animation: none; }
-    .np-song { font-size: 0.8rem; font-weight: 600; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .np-artist { font-size: 0.7rem; color: var(--fg-muted); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .np-idle-text { font-size: 0.74rem; color: var(--fg-muted); font-weight: 500; line-height: 1.4; }
-    .np-progress-wrap { width: 100%; height: 3px; border-radius: 3px; background: rgba(255,255,255,0.06); margin-top: 5px; overflow: hidden; }
-    .np-progress-bar { height: 100%; border-radius: 3px; background: var(--spotify-green); transition: width 1s linear; }
+@keyframes npPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+.np-label.idle-label { color: var(--fg-muted); }
+.np-label.idle-label .np-dot { background: var(--fg-muted); animation: none; }
 
+.np-song { font-size: 0.8rem; font-weight: 600; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.np-artist { font-size: 0.7rem; color: var(--fg-muted); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.np-idle-text { font-size: 0.74rem; color: var(--fg-muted); font-weight: 500; line-height: 1.4; }
+
+.np-progress-wrap { width: 100%; height: 3px; border-radius: 3px; background: rgba(255,255,255,0.06); margin-top: 5px; overflow: hidden; }
+.np-progress-bar { height: 100%; border-radius: 3px; background: var(--spotify-green); transition: width 1s linear; }
+
+    .spotify-connect {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 12px 14px; border-radius: 14px;
+      background: rgba(29,185,84,0.08); border: 1px solid rgba(29,185,84,0.2);
+      color: var(--spotify-green); font-family: 'Quicksand', sans-serif;
+      font-size: 0.8rem; font-weight: 700; cursor: pointer;
+      transition: all 0.3s ease; position: relative; z-index: 2;
+    }
+    .spotify-connect:hover {
+      background: rgba(29,185,84,0.15); border-color: rgba(29,185,84,0.4);
+      transform: translateY(-2px); box-shadow: 0 6px 24px rgba(29,185,84,0.15);
+    }
     .spotify-connect { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 14px; border-radius: 14px; background: rgba(29,185,84,0.08); border: 1px solid rgba(29,185,84,0.2); color: var(--spotify-green); font-family: 'Quicksand', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; position: relative; z-index: 2; }
     .spotify-connect:hover { background: rgba(29,185,84,0.15); border-color: rgba(29,185,84,0.4); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(29,185,84,0.15); }
-    .spotify-connect i { font-size: 1rem; }
+.spotify-connect i { font-size: 1rem; }
 
-    .footer-quote { text-align: center; margin-top: 6px; position: relative; z-index: 2; }
-    .footer-quote p { font-size: 0.78rem; font-style: italic; color: var(--fg-muted); line-height: 1.5; opacity: 0.7; }
-    .footer-quote .sparkle { color: var(--sakura); font-style: normal; }
+.footer-quote { text-align: center; margin-top: 6px; position: relative; z-index: 2; }
+.footer-quote p { font-size: 0.78rem; font-style: italic; color: var(--fg-muted); line-height: 1.5; opacity: 0.7; }
+.footer-quote .sparkle { color: var(--sakura); font-style: normal; }
 
     @media (max-width: 480px) {
+      .card-wrapper { padding: 12px; }
       .card { padding: 32px 22px 28px; }
       .display-name { font-size: 1.4rem; }
       .emmi-name { font-size: 1.6rem; }
-      .pre-edds { font-size: 2.2rem; }
-      .pre-content { max-width: 90%; }
       .socials { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
-  </style>
+    @media (max-width: 480px) { .card-wrapper { padding: 12px; } .card { padding: 32px 22px 28px; } .display-name { font-size: 1.4rem; } .emmi-name { font-size: 1.6rem; .pre-edds { font-size: 1.9rem; } .socials { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+</style>
 </head>
 <body>
 
-  <div class="pre-page" id="pre-page">
-    <div class="pre-bg-glow"></div>
-    <div class="pre-bg-glow g2"></div>
-    <div class="pre-particles" id="pre-particles"></div>
-    <div class="pre-content">
+  <!-- Pre-Page -->
+<div class="pre-page" id="prePage">
+<div class="pre-bg-glow"></div>
+<div class="pre-bg-glow g2"></div>
+<div class="pre-particles" id="preParticles"></div>
+<div class="pre-content">
+      <div class="pre-heart">&#9829;</div>
+      <div class="pre-name">Edd</div>
+      <div class="pre-subtitle">welcome to my world</div>
       <div class="pre-icon-row">
         <span class="pre-line"></span>
         <span class="pre-star"><i class="fa-solid fa-star"></i></span>
@@ -369,41 +738,62 @@
       <div class="pre-welcome">Welcome to</div>
       <div class="pre-edds">Edd's</div>
       <div class="pre-subtitle">About Me</div>
-      <button class="pre-enter-btn" onclick="enterSite()">
-        Enter <i class="fa-solid fa-arrow-right"></i>
-      </button>
-    </div>
-  </div>
+<button class="pre-enter-btn" onclick="enterSite()">
+Enter <i class="fa-solid fa-arrow-right"></i>
+</button>
+</div>
+</div>
 
-  <div class="main-content blurred" id="main-content">
-    <div class="ambient-glow g1"></div>
-    <div class="ambient-glow g2"></div>
-    <div class="ambient-glow g3"></div>
-    <canvas class="stars-layer" id="stars-canvas"></canvas>
-    <canvas id="sakura-canvas"></canvas>
+  <!-- Main Content -->
+<div class="main-content" id="mainContent">
+<div class="ambient-glow g1"></div>
+<div class="ambient-glow g2"></div>
+@@ -637,339 +368,103 @@
 
-    <div class="card-wrapper">
-      <main class="card" role="main">
-        <div class="avatar-section">
+<div class="card-wrapper">
+<main class="card" role="main">
+
+<div class="avatar-section">
           <div class="avatar-ring">
-            <div class="avatar-img"><i class="fa-solid fa-user"></i></div>
+            <div class="avatar-img">
+              <i class="fa-solid fa-user"></i>
+            </div>
           </div>
-          <h1 class="display-name">Edd</h1>
-          <p class="username">@OhRainy</p>
-          <span class="pronouns">He / Him</span>
-        </div>
-        <div class="divider"></div>
+          <div class="avatar-ring"><div class="avatar-img"><i class="fa-solid fa-user"></i></div></div>
+<h1 class="display-name">Edd</h1>
+<p class="username">@OhRainy</p>
+<span class="pronouns">He / Him</span>
+</div>
+
+<div class="divider"></div>
+
+        <p class="bio">
+          Lost in <em>anime</em> worlds and JDM builds.
+          Making edits, vibing to music, chasing the <em>Japanese aesthetic</em>.
+        </p>
+
         <p class="bio">Lost in <em>anime</em> worlds and JDM builds. Making edits, vibing to music, chasing the <em>Japanese aesthetic</em>.</p>
-        <div class="divider"></div>
-        <div class="love-section">
+<div class="divider"></div>
+
+<div class="love-section">
           <div class="mini-hearts">
-            <span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span>
+            <span class="mini-heart">&#9829;</span>
+            <span class="mini-heart">&#9829;</span>
+            <span class="mini-heart">&#9829;</span>
+            <span class="mini-heart">&#9829;</span>
+            <span class="mini-heart">&#9829;</span>
+            <span class="mini-heart">&#9829;</span>
+            <span class="mini-heart">&#9829;</span>
           </div>
           <div class="love-heart-wrap">
-            <div class="love-heart-ring"></div><div class="love-heart-ring"></div><div class="love-heart-ring"></div>
+            <div class="love-heart-ring"></div>
+            <div class="love-heart-ring"></div>
+            <div class="love-heart-ring"></div>
             <span class="love-heart">&#9829;</span>
           </div>
-          <div class="love-label">A part of me</div>
+          <div class="mini-hearts"><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span></div>
+          <div class="love-heart-wrap"><div class="love-heart-ring"></div><div class="love-heart-ring"></div><div class="love-heart-ring"></div><span class="love-heart">&#9829;</span></div>
+<div class="love-label">A part of me</div>
           <div class="emmi-name-wrap">
             <span class="emmi-name">Emmi</span>
             <span class="emmi-underline"></span>
@@ -414,33 +804,61 @@
             <span class="line2">My everything, my whole world <span class="heart-icon">&#9829;</span></span>
             <span class="line3">My reason to smile every single day</span>
           </p>
-        </div>
-        <div class="divider"></div>
-        <p class="section-title"><i class="fa-solid fa-star"></i> Interests</p>
+          <div class="emmi-name-wrap"><span class="emmi-name">Emmi</span><span class="emmi-underline"></span><span class="emmi-underline-glow"></span></div>
+          <p class="love-message"><span class="line1">The one who owns my heart</span><span class="line2">My everything, my whole world <span class="heart-icon">&#9829;</span></span><span class="line3">My reason to smile every single day</span></p>
+</div>
+
+<div class="divider"></div>
+
+<p class="section-title"><i class="fa-solid fa-star"></i> Interests</p>
         <div class="tags">
-          <span class="tag">Anime</span><span class="tag blue">JDM</span><span class="tag">Music</span><span class="tag blue">Manga</span><span class="tag">Edits</span><span class="tag blue">Japan</span><span class="tag">Aesthetic</span>
+          <span class="tag">Anime</span>
+          <span class="tag blue">JDM</span>
+          <span class="tag">Music</span>
+          <span class="tag blue">Manga</span>
+          <span class="tag">Edits</span>
+          <span class="tag blue">Japan</span>
+          <span class="tag">Aesthetic</span>
         </div>
-        <div class="divider"></div>
-        <p class="section-title"><i class="fa-solid fa-headphones"></i> Now Playing</p>
+
+        <div class="tags"><span class="tag">Anime</span><span class="tag blue">JDM</span><span class="tag">Music</span><span class="tag blue">Manga</span><span class="tag">Edits</span><span class="tag blue">Japan</span><span class="tag">Aesthetic</span></div>
+<div class="divider"></div>
+
+<p class="section-title"><i class="fa-solid fa-headphones"></i> Now Playing</p>
         <div id="np-area">
           <div class="now-playing">
             <div class="np-art">
               <div class="np-bars paused">
-                <div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div>
+                <div class="np-bar"></div>
+                <div class="np-bar"></div>
+                <div class="np-bar"></div>
+                <div class="np-bar"></div>
               </div>
             </div>
             <div class="np-info">
-              <div class="np-label idle-label"><span class="np-dot"></span><span>Loading...</span></div>
+              <div class="np-label idle-label">
+                <span class="np-dot"></span>
+                <span>Loading...</span>
+              </div>
               <div class="np-idle-text">Connecting to Spotify</div>
             </div>
           </div>
         </div>
-        <div class="divider"></div>
-        <p class="section-title"><i class="fa-solid fa-link"></i> Find Me</p>
-        <nav class="socials" aria-label="Social links">
-          <a href="https://github.com/OhRainy" target="_blank" rel="noopener" class="social-link github" aria-label="GitHub"><i class="fa-brands fa-github"></i> GitHub</a>
-          <a href="https://x.com/OhRainy_" target="_blank" rel="noopener" class="social-link twitter" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i> Twitter</a>
-          <a href="https://www.youtube.com/@OhRainy5" target="_blank" rel="noopener" class="social-link youtube" aria-label="YouTube"><i class="fa-brands fa-youtube"></i> YouTube</a>
+
+        <div id="np-area"><div class="now-playing"><div class="np-art"><div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div></div><div class="np-info"><div class="np-label idle-label"><span class="np-dot"></span><span>Loading...</span></div><div class="np-idle-text">Connecting to Spotify</div></div></div></div>
+<div class="divider"></div>
+
+<p class="section-title"><i class="fa-solid fa-link"></i> Find Me</p>
+<nav class="socials" aria-label="Social links">
+          <a href="https://github.com/OhRainy" target="_blank" rel="noopener" class="social-link github" aria-label="GitHub">
+            <i class="fa-brands fa-github"></i> GitHub
+          </a>
+          <a href="https://x.com/OhRainy_" target="_blank" rel="noopener" class="social-link twitter" aria-label="Twitter / X">
+            <i class="fa-brands fa-x-twitter"></i> Twitter
+          </a>
+          <a href="https://www.youtube.com/@OhRainy5" target="_blank" rel="noopener" class="social-link youtube" aria-label="YouTube">
+            <i class="fa-brands fa-youtube"></i> YouTube
+          </a>
           <div class="discord-reveal" onclick="this.classList.toggle('open')">
             <i class="fa-brands fa-discord"></i>
             <div class="text-slot">
@@ -448,47 +866,64 @@
               <span class="discord-name">edd_05idk</span>
             </div>
           </div>
+          <a href="https://open.spotify.com/user/31wqkzapkqmmoux6z24nzf2wqop4?si=c83336f7e7d54847" target="_blank" rel="noopener" class="social-link spotify full-width" aria-label="Spotify">
+            <i class="fa-brands fa-spotify"></i> Spotify
+          </a>
+          <a href="https://github.com/OhRainy" target="_blank" rel="noopener" class="social-link github" aria-label="GitHub"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="https://x.com/OhRainy_" target="_blank" rel="noopener" class="social-link twitter" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i> Twitter</a>
+          <a href="https://www.youtube.com/@OhRainy5" target="_blank" rel="noopener" class="social-link youtube" aria-label="YouTube"><i class="fa-brands fa-youtube"></i> YouTube</a>
+          <div class="discord-reveal" onclick="this.classList.toggle('open')"><i class="fa-brands fa-discord"></i><div class="text-slot"><span class="discord-label">Discord</span><span class="discord-name">edd_05idk</span></div></div>
           <a href="https://open.spotify.com/user/31wqkzapkqmmoux6z24nzf2wqop4?si=c83336f7e7d54847" target="_blank" rel="noopener" class="social-link spotify full-width" aria-label="Spotify"><i class="fa-brands fa-spotify"></i> Spotify</a>
-        </nav>
-        <div class="divider"></div>
+</nav>
+
+<div class="divider"></div>
+
         <div class="footer-quote">
           <p><span class="sparkle">✦</span> "It doesn't matter if the world is virtual. The feelings we share here are real." <span class="sparkle">✦</span></p>
         </div>
-      </main>
-    </div>
-  </div>
 
-  <script>
+        <div class="footer-quote"><p><span class="sparkle">✦</span> "It doesn't matter if the world is virtual. The feelings we share here are real." <span class="sparkle">✦</span></p></div>
+</main>
+</div>
+</div>
+
+<script>
     /* ═══ Pre-page particles ═══ */
-    (function() {
-      const container = document.getElementById('pre-particles');
+(function() {
+const container = document.getElementById('preParticles');
       for (let i = 0; i < 20; i++) {
-        const p = document.createElement('div');
-        p.className = 'pre-particle';
-        p.style.left = Math.random() * 100 + '%';
+      for (let i = 0; i < 18; i++) {
+const p = document.createElement('div');
+p.className = 'pre-particle';
+p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (Math.random() * 6 + 4) + 's';
+        p.style.animationDelay = (Math.random() * 6) + 's';
         p.style.animationDuration = (Math.random() * 7 + 5) + 's';
         p.style.animationDelay = (Math.random() * 7) + 's';
-        p.style.width = p.style.height = (Math.random() * 2 + 1) + 'px';
-        container.appendChild(p);
-      }
-    })();
+p.style.width = p.style.height = (Math.random() * 2 + 1) + 'px';
+container.appendChild(p);
+}
+})();
 
     /* ═══ Enter transition ═══ */
-    function enterSite() {
-      const pre = document.getElementById('pre-page');
-      const main = document.getElementById('main-content');
+function enterSite() {
+      const pre = document.getElementById('prePage');
+      const main = document.getElementById('mainContent');
       pre.classList.add('leaving');
-      main.classList.remove('blurred');
       main.classList.add('visible');
       setTimeout(() => { pre.classList.add('gone'); }, 900);
-    }
+      document.getElementById('prePage').classList.add('leaving');
+      document.getElementById('mainContent').classList.add('visible');
+      setTimeout(() => { document.getElementById('prePage').classList.add('gone'); }, 900);
+}
 
     /* ═══ Stars ═══ */
-    (function() {
+(function() {
       const c = document.getElementById('stars-canvas');
       const ctx = c.getContext('2d');
       let stars = [];
-      function resize() { c.width = innerWidth; c.height = innerHeight; }
+      const c = document.getElementById('stars-canvas'); const ctx = c.getContext('2d'); let stars = [];
+function resize() { c.width = innerWidth; c.height = innerHeight; }
       function make() {
         stars = [];
         for (let i = 0; i < 160; i++) stars.push({
@@ -510,14 +945,18 @@
       }
       resize(); make(); requestAnimationFrame(draw);
       addEventListener('resize', () => { resize(); make(); });
-    })();
+      function make() { stars = []; for (let i = 0; i < 160; i++) stars.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 1.4 + 0.3, sp: Math.random() * 0.008 + 0.003, ph: Math.random() * Math.PI * 2 }); }
+      function draw(t) { ctx.clearRect(0, 0, c.width, c.height); for (const s of stars) { const tw = 0.4 + 0.6 * Math.sin(t * s.sp + s.ph); ctx.beginPath(); ctx.arc(s.x, s.y, Math.max(0.1, s.r), 0, Math.PI * 2); ctx.fillStyle = `rgba(220,210,255,${tw})`; ctx.fill(); } requestAnimationFrame(draw); }
+      resize(); make(); requestAnimationFrame(draw); addEventListener('resize', () => { resize(); make(); });
+})();
 
-    /* ═══ Sakura Petals ═══ */
-    (function() {
+    /* ═══ Sakura ═══ */
+(function() {
       const c = document.getElementById('sakura-canvas');
       const ctx = c.getContext('2d');
       let petals = [];
-      function resize() { c.width = innerWidth; c.height = innerHeight; }
+      const c = document.getElementById('sakura-canvas'); const ctx = c.getContext('2d'); let petals = [];
+function resize() { c.width = innerWidth; c.height = innerHeight; }
       function petal(x, y, sz, rot, a) {
         ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.globalAlpha = a;
         ctx.beginPath(); ctx.moveTo(0, 0);
@@ -533,7 +972,9 @@
           rs: (Math.random()-0.5)*0.02, a: Math.random()*0.4+0.2,
           wp: Math.random()*Math.PI*2, ws: Math.random()*0.02+0.01 };
       }
-      function init() { petals = []; for (let i=0;i<28;i++) { const p=mk(); p.y=Math.random()*c.height; petals.push(p); } }
+      function petal(x, y, sz, rot, a) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.globalAlpha = a; ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(sz*0.4,-sz*0.6,sz,-sz*0.4,sz*0.5,sz*0.1); ctx.bezierCurveTo(sz*0.2,sz*0.5,-sz*0.1,sz*0.3,0,0); ctx.fillStyle = `rgba(255,183,213,${a})`; ctx.fill(); ctx.globalAlpha = 1; ctx.restore(); }
+      function mk() { return { x: Math.random()*c.width, y: -20-Math.random()*60, sz: Math.random()*10+7, sy: Math.random()*0.8+0.4, sx: Math.random()*0.6-0.1, rot: Math.random()*Math.PI*2, rs: (Math.random()-0.5)*0.02, a: Math.random()*0.4+0.2, wp: Math.random()*Math.PI*2, ws: Math.random()*0.02+0.01 }; }
+function init() { petals = []; for (let i=0;i<28;i++) { const p=mk(); p.y=Math.random()*c.height; petals.push(p); } }
       function anim() {
         ctx.clearRect(0,0,c.width,c.height);
         for (let i=0;i<petals.length;i++) {
@@ -545,21 +986,24 @@
       }
       resize(); init(); requestAnimationFrame(anim);
       addEventListener('resize', resize);
-    })();
+      function anim() { ctx.clearRect(0,0,c.width,c.height); for (let i=0;i<petals.length;i++) { const p=petals[i]; p.wp+=p.ws; p.x+=p.sx+Math.sin(p.wp)*0.5; p.y+=p.sy; p.rot+=p.rs; petal(p.x,p.y,p.sz,p.rot,p.a); if (p.y>c.height+30||p.x>c.width+30||p.x<-30) petals[i]=mk(); } requestAnimationFrame(anim); }
+      resize(); init(); requestAnimationFrame(anim); addEventListener('resize', resize);
+})();
 
     /* ═══ Tag hover ═══ */
     document.querySelectorAll('.tag').forEach(t => {
       t.addEventListener('mouseenter', function() { this.style.transition = 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)'; });
       t.addEventListener('mouseleave', function() { this.style.transition = 'all 0.3s ease'; });
     });
+    document.querySelectorAll('.tag').forEach(t => { t.addEventListener('mouseenter', function() { this.style.transition = 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)'; }); t.addEventListener('mouseleave', function() { this.style.transition = 'all 0.3s ease'; }); });
 
     /* ═══ Spotify PKCE ═══ */
-    const SPOTIFY_CLIENT_ID = '030425b6f52a4c11968bdf8af42facd8';
-    const REDIRECT_URI = 'https://ohrainy.github.io/';
-    const SCOPES = 'user-read-currently-playing user-read-playback-state';
-    const TOKEN_KEY = 'spotify_token_data';
-    const npArea = document.getElementById('np-area');
-    let progressTimer = null;
+const SPOTIFY_CLIENT_ID = '030425b6f52a4c11968bdf8af42facd8';
+const REDIRECT_URI = 'https://ohrainy.github.io/';
+const SCOPES = 'user-read-currently-playing user-read-playback-state';
+const TOKEN_KEY = 'spotify_token_data';
+const npArea = document.getElementById('np-area');
+let progressTimer = null;
 
     function generateRandomString(length) {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
@@ -568,9 +1012,8 @@
       return Array.from(arr, b => chars[b % chars.length]).join('');
     }
 
-    async function sha256(plain) {
-      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(plain));
-    }
+    function generateRandomString(length) { const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~'; const arr = new Uint8Array(length); crypto.getRandomValues(arr); return Array.from(arr, b => chars[b % chars.length]).join(''); }
+async function sha256(plain) { return crypto.subtle.digest('SHA-256', new TextEncoder().encode(plain)); }
 
     function base64encode(input) {
       const bytes = new Uint8Array(input);
@@ -584,23 +1027,12 @@
     }
 
     function showIdle(msg) {
-      npArea.innerHTML = `<div class="now-playing">
-        <div class="np-art"><div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div></div>
-        <div class="np-info"><div class="np-label idle-label"><span class="np-dot"></span><span>Not listening</span></div><div class="np-idle-text">${msg}</div></div>
-      </div>`;
+      npArea.innerHTML = `<div class="now-playing"><div class="np-art"><div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div></div><div class="np-info"><div class="np-label idle-label"><span class="np-dot"></span><span>Not listening</span></div><div class="np-idle-text">${msg}</div></div></div>`;
     }
 
     function showTrack(song, artist, image, isPlaying, progressMs, durationMs) {
       const pct = (isPlaying && durationMs > 0) ? Math.min((progressMs / durationMs) * 100, 100) : 0;
-      npArea.innerHTML = `<div class="now-playing active">
-        <div class="np-art">${image ? `<img src="${image}" alt="Album Art">` : `<div class="np-bars ${isPlaying ? '' : 'paused'}"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>`}</div>
-        <div class="np-info">
-          <div class="np-label"><span class="np-dot"></span><span>${isPlaying ? 'Listening to' : 'Paused'}</span></div>
-          <div class="np-song">${song}</div>
-          <div class="np-artist">${artist}</div>
-          ${isPlaying ? `<div class="np-progress-wrap"><div class="np-progress-bar" id="np-bar" style="width:${pct}%"></div></div>` : ''}
-        </div>
-      </div>`;
+      npArea.innerHTML = `<div class="now-playing active"><div class="np-art">${image ? `<img src="${image}" alt="Album Art">` : `<div class="np-bars ${isPlaying ? '' : 'paused'}"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>`}</div><div class="np-info"><div class="np-label"><span class="np-dot"></span><span>${isPlaying ? 'Listening to' : 'Paused'}</span></div><div class="np-song">${song}</div><div class="np-artist">${artist}</div>${isPlaying ? `<div class="np-progress-wrap"><div class="np-progress-bar" id="np-bar" style="width:${pct}%"></div></div>` : ''}</div></div>`;
       if (isPlaying) startProgress(progressMs, durationMs);
     }
 
@@ -631,12 +1063,8 @@
       const verifier = sessionStorage.getItem('pkce_verifier');
       if (!verifier) return null;
       const res = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          grant_type: 'authorization_code', code: code, redirect_uri: REDIRECT_URI,
-          client_id: SPOTIFY_CLIENT_ID, code_verifier: verifier
-        })
+        method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ grant_type: 'authorization_code', code: code, redirect_uri: REDIRECT_URI, client_id: SPOTIFY_CLIENT_ID, code_verifier: verifier })
       });
       if (!res.ok) return null;
       const data = await res.json();
@@ -650,12 +1078,8 @@
       const stored = JSON.parse(localStorage.getItem(TOKEN_KEY));
       if (!stored?.refresh_token) return null;
       const res = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          grant_type: 'refresh_token', refresh_token: stored.refresh_token,
-          client_id: SPOTIFY_CLIENT_ID
-        })
+        method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: stored.refresh_token, client_id: SPOTIFY_CLIENT_ID })
       });
       if (!res.ok) { localStorage.removeItem(TOKEN_KEY); return null; }
       const data = await res.json();
@@ -668,10 +1092,7 @@
     async function getToken() {
       const stored = JSON.parse(localStorage.getItem(TOKEN_KEY));
       if (stored?.access_token && stored.expires_at > Date.now()) return stored.access_token;
-      if (stored?.refresh_token) {
-        const r = await refreshToken();
-        return r?.access_token || null;
-      }
+      if (stored?.refresh_token) { const r = await refreshToken(); return r?.access_token || null; }
       return null;
     }
 
@@ -679,36 +1100,33 @@
       const token = await getToken();
       if (!token) { showConnect(); return; }
       try {
-        const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
+        const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', { headers: { 'Authorization': 'Bearer ' + token } });
         if (res.status === 204) { showIdle('Nothing playing right now'); return; }
-        if (res.status === 401) {
-          if (await refreshToken()) return fetchNowPlaying();
-          showConnect(); return;
-        }
+        if (res.status === 401) { if (await refreshToken()) return fetchNowPlaying(); showConnect(); return; }
         if (!res.ok) { showIdle('Could not load track'); return; }
         const d = await res.json();
-        showTrack(
-          d.item.name,
-          d.item.artists.map(a => a.name).join(', '),
-          d.item.album.images[d.item.album.images.length - 1]?.url || '',
-          d.is_playing, d.progress_ms, d.item.duration_ms
-        );
+        showTrack(d.item.name, d.item.artists.map(a => a.name).join(', '), d.item.album.images[d.item.album.images.length - 1]?.url || '', d.is_playing, d.progress_ms, d.item.duration_ms);
       } catch (e) { showIdle('Could not connect to Spotify'); }
     }
 
     async function init() {
       const code = new URLSearchParams(location.search).get('code');
-      if (code) {
-        history.replaceState({}, document.title, REDIRECT_URI);
-        await exchangeCode(code);
-      }
+      if (code) { history.replaceState({}, document.title, REDIRECT_URI); await exchangeCode(code); }
       await fetchNowPlaying();
       setInterval(fetchNowPlaying, 5000);
     }
 
-    init();
-  </script>
+    function base64encode(input) { const bytes = new Uint8Array(input); let str = ''; bytes.forEach(b => str += String.fromCharCode(b)); return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+    function showConnect() { npArea.innerHTML = `<button class="spotify-connect" onclick="startAuth()"><i class="fa-brands fa-spotify"></i> Connect Spotify</button>`; }
+    function showIdle(msg) { npArea.innerHTML = `<div class="now-playing"><div class="np-art"><div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div></div><div class="np-info"><div class="np-label idle-label"><span class="np-dot"></span><span>Not listening</span></div><div class="np-idle-text">${msg}</div></div></div>`; }
+    function showTrack(song, artist, image, isPlaying, progressMs, durationMs) { const pct = (isPlaying && durationMs > 0) ? Math.min((progressMs / durationMs) * 100, 100) : 0; npArea.innerHTML = `<div class="now-playing active"><div class="np-art">${image ? `<img src="${image}" alt="Album Art">` : `<div class="np-bars ${isPlaying ? '' : 'paused'}"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>`}</div><div class="np-info"><div class="np-label"><span class="np-dot"></span><span>${isPlaying ? 'Listening to' : 'Paused'}</span></div><div class="np-song">${song}</div><div class="np-artist">${artist}</div>${isPlaying ? `<div class="np-progress-wrap"><div class="np-progress-bar" id="np-bar" style="width:${pct}%"></div></div>` : ''}</div></div>`; if (isPlaying) startProgress(progressMs, durationMs); }
+    function startProgress(progressMs, durationMs) { if (progressTimer) clearInterval(progressTimer); const bar = document.getElementById('np-bar'); if (!bar) return; const startTime = Date.now() - progressMs; progressTimer = setInterval(() => { const pct = Math.min(((Date.now() - startTime) / durationMs) * 100, 100); bar.style.width = pct + '%'; if (pct >= 100) clearInterval(progressTimer); }, 1000); }
+    async function startAuth() { const verifier = generateRandomString(64); sessionStorage.setItem('pkce_verifier', verifier); const challenge = base64encode(await sha256(verifier)); const params = new URLSearchParams({ response_type: 'code', client_id: SPOTIFY_CLIENT_ID, scope: SCOPES, code_challenge_method: 'S256', code_challenge: challenge, redirect_uri: REDIRECT_URI }); window.location.href = 'https://accounts.spotify.com/authorize?' + params.toString(); }
+    async function exchangeCode(code) { const verifier = sessionStorage.getItem('pkce_verifier'); if (!verifier) return null; const res = await fetch('https://accounts.spotify.com/api/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ grant_type: 'authorization_code', code: code, redirect_uri: REDIRECT_URI, client_id: SPOTIFY_CLIENT_ID, code_verifier: verifier }) }); if (!res.ok) return null; const data = await res.json(); data.expires_at = Date.now() + data.expires_in * 1000; localStorage.setItem(TOKEN_KEY, JSON.stringify(data)); sessionStorage.removeItem('pkce_verifier'); return data; }
+    async function refreshToken() { const stored = JSON.parse(localStorage.getItem(TOKEN_KEY)); if (!stored?.refresh_token) return null; const res = await fetch('https://accounts.spotify.com/api/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: stored.refresh_token, client_id: SPOTIFY_CLIENT_ID }) }); if (!res.ok) { localStorage.removeItem(TOKEN_KEY); return null; } const data = await res.json(); data.refresh_token = data.refresh_token || stored.refresh_token; data.expires_at = Date.now() + data.expires_in * 1000; localStorage.setItem(TOKEN_KEY, JSON.stringify(data)); return data; }
+    async function getToken() { const stored = JSON.parse(localStorage.getItem(TOKEN_KEY)); if (stored?.access_token && stored.expires_at > Date.now()) return stored.access_token; if (stored?.refresh_token) { const r = await refreshToken(); return r?.access_token || null; } return null; }
+    async function fetchNowPlaying() { const token = await getToken(); if (!token) { showConnect(); return; } try { const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', { headers: { 'Authorization': 'Bearer ' + token } }); if (res.status === 204) { showIdle('Nothing playing right now'); return; } if (res.status === 401) { if (await refreshToken()) return fetchNowPlaying(); showConnect(); return; } if (!res.ok) { showIdle('Could not load track'); return; } const d = await res.json(); showTrack(d.item.name, d.item.artists.map(a => a.name).join(', '), d.item.album.images[d.item.album.images.length - 1]?.url || '', d.is_playing, d.progress_ms, d.item.duration_ms); } catch (e) { showIdle('Could not connect to Spotify'); } }
+    async function init() { const code = new URLSearchParams(location.search).get('code'); if (code) { history.replaceState({}, document.title, REDIRECT_URI); await exchangeCode(code); } await fetchNowPlaying(); setInterval(fetchNowPlaying, 5000); }
+init();
+</script>
 </body>
-</html>
