@@ -183,7 +183,6 @@
       filter: blur(12px); opacity: 0.3;
       transition: filter 1s ease 0.3s, opacity 1s ease 0.3s;
       width: 100%; display: flex; align-items: center; justify-content: center;
-      padding: 40px 20px;
     }
     .main-content.visible { filter: blur(0); opacity: 1; }
 
@@ -196,38 +195,14 @@
     .ambient-glow.g3 { width: 300px; height: 300px; top: 40%; left: 60%; background: radial-gradient(circle, rgba(200,160,255,0.07), transparent 70%); animation: floatGlow 8s ease-in-out infinite alternate; }
     @keyframes floatGlow { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-40px, 30px) scale(1.15); } }
 
-    .card-wrapper { 
-      position: relative; 
-      z-index: 10; 
-      width: 100%; 
-      max-width: 480px; 
-      padding: 20px;
-      max-height: 90vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--accent) transparent;
-    }
-    
-    .card-wrapper::-webkit-scrollbar {
-      width: 6px;
-    }
-    .card-wrapper::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .card-wrapper::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 3px;
-    }
+    .card-wrapper { position: relative; z-index: 10; width: 100%; max-width: 440px; padding: 20px; }
 
     .card {
       background: var(--bg-card);
       backdrop-filter: blur(24px) saturate(1.4);
       -webkit-backdrop-filter: blur(24px) saturate(1.4);
-      border: 1px solid var(--border); 
-      border-radius: var(--card-radius);
-      padding: 40px 32px 36px; 
-      position: relative; 
-      overflow: hidden;
+      border: 1px solid var(--border); border-radius: var(--card-radius);
+      padding: 40px 32px 36px; position: relative; overflow: hidden;
       animation: cardIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
     @keyframes cardIn { 0% { opacity: 0; transform: translateY(30px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
@@ -359,99 +334,12 @@
     .footer-quote p { font-size: 0.78rem; font-style: italic; color: var(--fg-muted); line-height: 1.5; opacity: 0.7; }
     .footer-quote .sparkle { color: var(--sakura); font-style: normal; }
 
-    /* ═══ Comments Section (Cusdis) ═══ */
-    .comments-section {
-      position: relative;
-      z-index: 2;
-      margin-top: 24px;
-      animation: fadeInUp 0.6s ease both;
-    }
-    
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .comments-container {
-      border-radius: 16px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      min-height: 150px;
-      transition: all 0.3s ease;
-    }
-
-    .comments-container:hover {
-      border-color: rgba(255, 126, 179, 0.25);
-      box-shadow: 0 8px 32px rgba(255, 126, 179, 0.08);
-    }
-
-    /* Cusdis Theme Override - Match Your Aesthetic */
-    #cusdis_thread {
-      --color-primary: #ff7eb3 !important;
-      --color-primary-hover: #ff8ab5 !important;
-      --color-text: #f0e8f8 !important;
-      --color-text-muted: #9b8fb8 !important;
-      --color-border: rgba(255, 126, 179, 0.2) !important;
-      --color-bg: transparent !important;
-      --color-bg-input: rgba(20, 16, 40, 0.8) !important;
-      --color-bg-hover: rgba(255, 126, 179, 0.08) !important;
-      --color-navbar-bg: transparent !important;
-      font-family: 'Quicksand', sans-serif !important;
-      border-radius: 16px !important;
-    }
-
-    #cusdis_thread iframe {
-      border-radius: 16px !important;
-      background: transparent !important;
-    }
-
-    .loading-comments {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-      text-align: center;
-      color: var(--fg-muted);
-    }
-
-    .loading-spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid rgba(255, 126, 179, 0.2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 12px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    @media (max-width: 480px) { 
-      .card-wrapper { padding: 12px; } 
-      .card { padding: 32px 22px 28px; } 
-      .display-name { font-size: 1.4rem; } 
-      .emmi-name { font-size: 1.6rem; }
-      .pre-edds { font-size: 1.9rem; } 
-      .socials { grid-template-columns: 1fr; }
-      .main-content { padding: 20px 12px; }
-    }
-    
+    @media (max-width: 480px) { .card-wrapper { padding: 12px; } .card { padding: 32px 22px 28px; } .display-name { font-size: 1.4rem; } .emmi-name { font-size: 1.6rem; .pre-edds { font-size: 1.9rem; } .socials { grid-template-columns: 1fr; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
   </style>
 </head>
 <body>
 
-  <!-- Pre-Page -->
   <div class="pre-page" id="prePage">
     <div class="pre-bg-glow"></div>
     <div class="pre-bg-glow g2"></div>
@@ -471,7 +359,6 @@
     </div>
   </div>
 
-  <!-- Main Content -->
   <div class="main-content" id="mainContent">
     <div class="ambient-glow g1"></div>
     <div class="ambient-glow g2"></div>
@@ -481,154 +368,44 @@
 
     <div class="card-wrapper">
       <main class="card" role="main">
-        <!-- Avatar Section -->
         <div class="avatar-section">
-          <div class="avatar-ring">
-            <div class="avatar-img"><i class="fa-solid fa-user"></i></div>
-          </div>
+          <div class="avatar-ring"><div class="avatar-img"><i class="fa-solid fa-user"></i></div></div>
           <h1 class="display-name">Edd</h1>
           <p class="username">@OhRainy</p>
           <span class="pronouns">He / Him</span>
         </div>
-
         <div class="divider"></div>
-
-        <!-- Bio -->
         <p class="bio">Lost in <em>anime</em> worlds and JDM builds. Making edits, vibing to music, chasing the <em>Japanese aesthetic</em>.</p>
-
         <div class="divider"></div>
-
-        <!-- Love Section -->
         <div class="love-section">
-          <div class="mini-hearts">
-            <span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span>
-            <span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span>
-          </div>
-          <div class="love-heart-wrap">
-            <div class="love-heart-ring"></div>
-            <div class="love-heart-ring"></div>
-            <div class="love-heart-ring"></div>
-            <span class="love-heart">&#9829;</span>
-          </div>
+          <div class="mini-hearts"><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span><span class="mini-heart">&#9829;</span></div>
+          <div class="love-heart-wrap"><div class="love-heart-ring"></div><div class="love-heart-ring"></div><div class="love-heart-ring"></div><span class="love-heart">&#9829;</span></div>
           <div class="love-label">A part of me</div>
-          <div class="emmi-name-wrap">
-            <span class="emmi-name">Emmi</span>
-            <span class="emmi-underline"></span>
-            <span class="emmi-underline-glow"></span>
-          </div>
-          <p class="love-message">
-            <span class="line1">The one who owns my heart</span>
-            <span class="line2">My everything, my whole world <span class="heart-icon">&#9829;</span></span>
-            <span class="line3">My reason to smile every single day</span>
-          </p>
+          <div class="emmi-name-wrap"><span class="emmi-name">Emmi</span><span class="emmi-underline"></span><span class="emmi-underline-glow"></span></div>
+          <p class="love-message"><span class="line1">The one who owns my heart</span><span class="line2">My everything, my whole world <span class="heart-icon">&#9829;</span></span><span class="line3">My reason to smile every single day</span></p>
         </div>
-
         <div class="divider"></div>
-
-        <!-- Interests Tags -->
         <p class="section-title"><i class="fa-solid fa-star"></i> Interests</p>
-        <div class="tags">
-          <span class="tag">Anime</span>
-          <span class="tag blue">JDM</span>
-          <span class="tag">Music</span>
-          <span class="tag blue">Manga</span>
-          <span class="tag">Edits</span>
-          <span class="tag blue">Japan</span>
-          <span class="tag">Aesthetic</span>
-        </div>
-
+        <div class="tags"><span class="tag">Anime</span><span class="tag blue">JDM</span><span class="tag">Music</span><span class="tag blue">Manga</span><span class="tag">Edits</span><span class="tag blue">Japan</span><span class="tag">Aesthetic</span></div>
         <div class="divider"></div>
-
-        <!-- Now Playing (Spotify) -->
         <p class="section-title"><i class="fa-solid fa-headphones"></i> Now Playing</p>
-        <div id="np-area">
-          <div class="now-playing">
-            <div class="np-art">
-              <div class="np-bars paused">
-                <div class="np-bar"></div>
-                <div class="np-bar"></div>
-                <div class="np-bar"></div>
-                <div class="np-bar"></div>
-              </div>
-            </div>
-            <div class="np-info">
-              <div class="np-label idle-label"><span class="np-dot"></span><span>Loading...</span></div>
-              <div class="np-idle-text">Connecting to Spotify</div>
-            </div>
-          </div>
-        </div>
-
+        <div id="np-area"><div class="now-playing"><div class="np-art"><div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div></div><div class="np-info"><div class="np-label idle-label"><span class="np-dot"></span><span>Loading...</span></div><div class="np-idle-text">Connecting to Spotify</div></div></div></div>
         <div class="divider"></div>
-
-        <!-- Social Links -->
         <p class="section-title"><i class="fa-solid fa-link"></i> Find Me</p>
         <nav class="socials" aria-label="Social links">
-          <a href="https://github.com/OhRainy" target="_blank" rel="noopener" class="social-link github" aria-label="GitHub">
-            <i class="fa-brands fa-github"></i> GitHub
-          </a>
-          <a href="https://x.com/OhRainy_" target="_blank" rel="noopener" class="social-link twitter" aria-label="Twitter / X">
-            <i class="fa-brands fa-x-twitter"></i> Twitter
-          </a>
-          <a href="https://www.youtube.com/@OhRainy5" target="_blank" rel="noopener" class="social-link youtube" aria-label="YouTube">
-            <i class="fa-brands fa-youtube"></i> YouTube
-          </a>
-          <div class="discord-reveal" onclick="this.classList.toggle('open')">
-            <i class="fa-brands fa-discord"></i>
-            <div class="text-slot">
-              <span class="discord-label">Discord</span>
-              <span class="discord-name">edd_05idk</span>
-            </div>
-          </div>
-          <a href="https://open.spotify.com/user/31wqkzapkqmmoux6z24nzf2wqop4?si=c83336f7e7d54847" target="_blank" rel="noopener" class="social-link spotify full-width" aria-label="Spotify">
-            <i class="fa-brands fa-spotify"></i> Spotify
-          </a>
+          <a href="https://github.com/OhRainy" target="_blank" rel="noopener" class="social-link github" aria-label="GitHub"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="https://x.com/OhRainy_" target="_blank" rel="noopener" class="social-link twitter" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i> Twitter</a>
+          <a href="https://www.youtube.com/@OhRainy5" target="_blank" rel="noopener" class="social-link youtube" aria-label="YouTube"><i class="fa-brands fa-youtube"></i> YouTube</a>
+          <div class="discord-reveal" onclick="this.classList.toggle('open')"><i class="fa-brands fa-discord"></i><div class="text-slot"><span class="discord-label">Discord</span><span class="discord-name">edd_05idk</span></div></div>
+          <a href="https://open.spotify.com/user/31wqkzapkqmmoux6z24nzf2wqop4?si=c83336f7e7d54847" target="_blank" rel="noopener" class="social-link spotify full-width" aria-label="Spotify"><i class="fa-brands fa-spotify"></i> Spotify</a>
         </nav>
-
         <div class="divider"></div>
-
-        <!-- Footer Quote -->
-        <div class="footer-quote">
-          <p><span class="sparkle">✦</span> "It doesn't matter if the world is virtual. The feelings we share here are real." <span class="sparkle">✦</span></p>
-        </div>
-
-        <!-- ═══ COMMENTS SECTION (CUSDIS) - WITH YOUR APP ID! ═══ -->
-        <div class="divider"></div>
-        
-        <div class="comments-section">
-          <p class="section-title"><i class="fa-solid fa-comments"></i> Comments</p>
-          
-          <div class="comments-container">
-            <!-- Loading State (shown while Cusdis loads) -->
-            <div class="loading-comments" id="commentsLoading">
-              <div class="loading-spinner"></div>
-              <div class="loading-text">Loading comments...</div>
-            </div>
-            
-            <!-- Cusdis Container - YOUR APP ID IS HERE! ✅ -->
-            <div id="cusdis_thread"
-              data-host="https://cusdis.com"
-              data-app-id="e0205507-6eab-4bb4-930a-b3eead625e2a"
-              data-page-id="/"
-              data-page-url="https://ohrainy.github.io/"
-              data-page-title="Edd's Profile"
-              data-theme="dark"
-              style="display: none;">
-            </div>
-            
-            <!-- Cusdis Script -->
-            <script async defer src="https://cusdis.com/js/widget/lang/en.js"></script>
-            <script async defer src="https://cusdis.com/js/cusdis.es.js" 
-                    data-host="https://cusdis.com" 
-                    data-app-id="e0205507-6eab-4bb4-930a-b3eead625e2a"></script>
-          </div>
-        </div>
-
+        <div class="footer-quote"><p><span class="sparkle">✦</span> "It doesn't matter if the world is virtual. The feelings we share here are real." <span class="sparkle">✦</span></p></div>
       </main>
     </div>
   </div>
 
   <script>
-    // ═══ Pre-Page Particles ═══
     (function() {
       const container = document.getElementById('preParticles');
       for (let i = 0; i < 18; i++) {
@@ -642,174 +419,32 @@
       }
     })();
 
-    // ═══ Enter Site Function ═══
     function enterSite() {
       document.getElementById('prePage').classList.add('leaving');
       document.getElementById('mainContent').classList.add('visible');
-      setTimeout(() => { 
-        document.getElementById('prePage').classList.add('gone'); 
-      }, 900);
+      setTimeout(() => { document.getElementById('prePage').classList.add('gone'); }, 900);
     }
 
-    // ═══ Stars Background ═══
     (function() {
-      const c = document.getElementById('stars-canvas'); 
-      const ctx = c.getContext('2d'); 
-      let stars = [];
-      
-      function resize() { 
-        c.width = innerWidth; 
-        c.height = innerHeight; 
-      }
-      
-      function make() { 
-        stars = []; 
-        for (let i = 0; i < 160; i++) 
-          stars.push({ 
-            x: Math.random() * c.width, 
-            y: Math.random() * c.height, 
-            r: Math.random() * 1.4 + 0.3, 
-            sp: Math.random() * 0.008 + 0.003, 
-            ph: Math.random() * Math.PI * 2 
-          }); 
-      }
-      
-      function draw(t) { 
-        ctx.clearRect(0, 0, c.width, c.height); 
-        for (const s of stars) { 
-          const tw = 0.4 + 0.6 * Math.sin(t * s.sp + s.ph); 
-          ctx.beginPath(); 
-          ctx.arc(s.x, s.y, Math.max(0.1, s.r), 0, Math.PI * 2); 
-          ctx.fillStyle = `rgba(220,210,255,${tw})`; 
-          ctx.fill(); 
-        } 
-        requestAnimationFrame(draw); 
-      }
-      
-      resize(); 
-      make(); 
-      requestAnimationFrame(draw); 
-      addEventListener('resize', () => { resize(); make(); });
+      const c = document.getElementById('stars-canvas'); const ctx = c.getContext('2d'); let stars = [];
+      function resize() { c.width = innerWidth; c.height = innerHeight; }
+      function make() { stars = []; for (let i = 0; i < 160; i++) stars.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 1.4 + 0.3, sp: Math.random() * 0.008 + 0.003, ph: Math.random() * Math.PI * 2 }); }
+      function draw(t) { ctx.clearRect(0, 0, c.width, c.height); for (const s of stars) { const tw = 0.4 + 0.6 * Math.sin(t * s.sp + s.ph); ctx.beginPath(); ctx.arc(s.x, s.y, Math.max(0.1, s.r), 0, Math.PI * 2); ctx.fillStyle = `rgba(220,210,255,${tw})`; ctx.fill(); } requestAnimationFrame(draw); }
+      resize(); make(); requestAnimationFrame(draw); addEventListener('resize', () => { resize(); make(); });
     })();
 
-    // ═══ Sakura Petals Animation ═══
     (function() {
-      const c = document.getElementById('sakura-canvas'); 
-      const ctx = c.getContext('2d'); 
-      let petals = [];
-      
-      function resize() { 
-        c.width = innerWidth; 
-        c.height = innerHeight; 
-      }
-      
-      function petal(x, y, sz, rot, a) { 
-        ctx.save(); 
-        ctx.translate(x, y); 
-        ctx.rotate(rot); 
-        ctx.globalAlpha = a; 
-        ctx.beginPath(); 
-        ctx.moveTo(0, 0); 
-        ctx.bezierCurveTo(sz*0.4,-sz*0.6,sz,-sz*0.4,sz*0.5,sz*0.1); 
-        ctx.bezierCurveTo(sz*0.2,sz*0.5,-sz*0.1,sz*0.3,0,0); 
-        ctx.fillStyle = `rgba(255,183,213,${a})`; 
-        ctx.fill(); 
-        ctx.globalAlpha = 1; 
-        ctx.restore(); 
-      }
-      
-      function mk() { 
-        return { 
-          x: Math.random()*c.width, 
-          y: -20-Math.random()*60, 
-          sz: Math.random()*10+7, 
-          sy: Math.random()*0.8+0.4, 
-          sx: Math.random()*0.6-0.1, 
-          rot: Math.random()*Math.PI*2, 
-          rs: (Math.random()-0.5)*0.02, 
-          a: Math.random()*0.4+0.2, 
-          wp: Math.random()*Math.PI*2, 
-          ws: Math.random()*0.02+0.01 
-        }; 
-      }
-      
-      function init() { 
-        petals = []; 
-        for (let i=0;i<28;i++) { 
-          const p=mk(); 
-          p.y=Math.random()*c.height; 
-          petals.push(p); 
-        } 
-      }
-      
-      function anim() { 
-        ctx.clearRect(0,0,c.width,c.height); 
-        for (let i=0;i<petals.length;i++) { 
-          const p=petals[i]; 
-          p.wp+=p.ws; 
-          p.x+=p.sx+Math.sin(p.wp)*0.5; 
-          p.y+=p.sy; 
-          p.rot+=p.rs; 
-          petal(p.x,p.y,p.sz,p.rot,p.a); 
-          if (p.y>c.height+30||p.x>c.width+30||p.x<-30) 
-            petals[i]=mk(); 
-        } 
-        requestAnimationFrame(anim); 
-      }
-      
-      resize(); 
-      init(); 
-      requestAnimationFrame(anim); 
-      addEventListener('resize', resize);
+      const c = document.getElementById('sakura-canvas'); const ctx = c.getContext('2d'); let petals = [];
+      function resize() { c.width = innerWidth; c.height = innerHeight; }
+      function petal(x, y, sz, rot, a) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.globalAlpha = a; ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(sz*0.4,-sz*0.6,sz,-sz*0.4,sz*0.5,sz*0.1); ctx.bezierCurveTo(sz*0.2,sz*0.5,-sz*0.1,sz*0.3,0,0); ctx.fillStyle = `rgba(255,183,213,${a})`; ctx.fill(); ctx.globalAlpha = 1; ctx.restore(); }
+      function mk() { return { x: Math.random()*c.width, y: -20-Math.random()*60, sz: Math.random()*10+7, sy: Math.random()*0.8+0.4, sx: Math.random()*0.6-0.1, rot: Math.random()*Math.PI*2, rs: (Math.random()-0.5)*0.02, a: Math.random()*0.4+0.2, wp: Math.random()*Math.PI*2, ws: Math.random()*0.02+0.01 }; }
+      function init() { petals = []; for (let i=0;i<28;i++) { const p=mk(); p.y=Math.random()*c.height; petals.push(p); } }
+      function anim() { ctx.clearRect(0,0,c.width,c.height); for (let i=0;i<petals.length;i++) { const p=petals[i]; p.wp+=p.ws; p.x+=p.sx+Math.sin(p.wp)*0.5; p.y+=p.sy; p.rot+=p.rs; petal(p.x,p.y,p.sz,p.rot,p.a); if (p.y>c.height+30||p.x>c.width+30||p.x<-30) petals[i]=mk(); } requestAnimationFrame(anim); }
+      resize(); init(); requestAnimationFrame(anim); addEventListener('resize', resize);
     })();
 
-    // ═══ Tag Hover Effects ═══
-    document.querySelectorAll('.tag').forEach(t => { 
-      t.addEventListener('mouseenter', function() { 
-        this.style.transition = 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)'; 
-      }); 
-      t.addEventListener('mouseleave', function() { 
-        this.style.transition = 'all 0.3s ease'; 
-      }); 
-    });
+    document.querySelectorAll('.tag').forEach(t => { t.addEventListener('mouseenter', function() { this.style.transition = 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)'; }); t.addEventListener('mouseleave', function() { this.style.transition = 'all 0.3s ease'; }); });
 
-    // ═══ Cusdis Loading Handler ═══
-    // Hide loading spinner when Cusdis loads
-    const cusdisObserver = new MutationObserver((mutations, obs) => {
-      const cusdisIframe = document.querySelector('#cusdis_thread iframe') || 
-                           document.querySelector('#cusdis-thread iframe');
-      if (cusdisIframe) {
-        document.getElementById('commentsLoading').style.display = 'none';
-        document.getElementById('cusdis_thread').style.display = 'block';
-        obs.disconnect();
-      }
-    });
-
-    // Start observing when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-      const cusdisContainer = document.getElementById('cusdis_thread');
-      if (cusdisContainer) {
-        cusdisObserver.observe(cusdisContainer, { childList: true, subtree: true });
-      }
-    });
-
-    // Fallback: hide loading after 5 seconds even if Cusdis hasn't loaded
-    setTimeout(() => {
-      const loading = document.getElementById('commentsLoading');
-      const container = document.getElementById('cusdis_thread');
-      if (loading && loading.style.display !== 'none') {
-        loading.innerHTML = `
-          <div style="text-align: center; padding: 20px;">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 2rem; color: var(--fg-muted); margin-bottom: 12px; display: block;"></i>
-            <div class="loading-text" style="margin-bottom: 8px;">Comments couldn't load</div>
-            <div style="font-size: 0.75rem; opacity: 0.7;">Make sure Cusdis is configured correctly</div>
-          </div>
-        `;
-        container.style.display = 'block';
-      }
-    }, 5000);
-
-    // ═══ Spotify Integration ═══
     const SPOTIFY_CLIENT_ID = '030425b6f52a4c11968bdf8af42facd8';
     const REDIRECT_URI = 'https://ohrainy.github.io/';
     const SCOPES = 'user-read-currently-playing user-read-playback-state';
@@ -817,169 +452,19 @@
     const npArea = document.getElementById('np-area');
     let progressTimer = null;
 
-    function generateRandomString(length) { 
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~'; 
-      const arr = new Uint8Array(length); 
-      crypto.getRandomValues(arr); 
-      return Array.from(arr, b => chars[b % chars.length]).join(''); 
-    }
-    
-    async function sha256(plain) { 
-      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(plain)); 
-    }
-    
-    function base64encode(input) { 
-      const bytes = new Uint8Array(input); 
-      let str = ''; 
-      bytes.forEach(b => str += String.fromCharCode(b)); 
-      return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); 
-    }
-    
-    function showConnect() { 
-      npArea.innerHTML = `<button class="spotify-connect" onclick="startAuth()"><i class="fa-brands fa-spotify"></i> Connect Spotify</button>`; 
-    }
-    
-    function showIdle(msg) { 
-      npArea.innerHTML = `<div class="now-playing"><div class="np-art"><div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div></div><div class="np-info"><div class="np-label idle-label"><span class="np-dot"></span><span>Not listening</span></div><div class="np-idle-text">${msg}</div></div></div>`; 
-    }
-    
-    function showTrack(song, artist, image, isPlaying, progressMs, durationMs) { 
-      const pct = (isPlaying && durationMs > 0) ? Math.min((progressMs / durationMs) * 100, 100) : 0; 
-      npArea.innerHTML = `<div class="now-playing active"><div class="np-art">${image ? `<img src="${image}" alt="Album Art">` : `<div class="np-bars ${isPlaying ? '' : 'paused'}"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>`}</div><div class="np-info"><div class="np-label"><span class="np-dot"></span><span>${isPlaying ? 'Listening to' : 'Paused'}</span></div><div class="np-song">${song}</div><div class="np-artist">${artist}</div>${isPlaying ? `<div class="np-progress-wrap"><div class="np-progress-bar" id="np-bar" style="width:${pct}%"></div></div>` : ''}</div></div>`; 
-      if (isPlaying) startProgress(progressMs, durationMs); 
-    }
-    
-    function startProgress(progressMs, durationMs) { 
-      if (progressTimer) clearInterval(progressTimer); 
-      const bar = document.getElementById('np-bar'); 
-      if (!bar) return; 
-      const startTime = Date.now() - progressMs; 
-      progressTimer = setInterval(() => { 
-        const pct = Math.min(((Date.now() - startTime) / durationMs) * 100, 100); 
-        bar.style.width = pct + '%'; 
-        if (pct >= 100) clearInterval(progressTimer); 
-      }, 1000); 
-    }
-    
-    async function startAuth() { 
-      const verifier = generateRandomString(64); 
-      sessionStorage.setItem('pkce_verifier', verifier); 
-      const challenge = base64encode(await sha256(verifier)); 
-      const params = new URLSearchParams({ 
-        response_type: 'code', 
-        client_id: SPOTIFY_CLIENT_ID, 
-        scope: SCOPES, 
-        code_challenge_method: 'S256', 
-        code_challenge: challenge, 
-        redirect_uri: REDIRECT_URI 
-      }); 
-      window.location.href = 'https://accounts.spotify.com/authorize?' + params.toString(); 
-    }
-    
-    async function exchangeCode(code) { 
-      const verifier = sessionStorage.getItem('pkce_verifier'); 
-      if (!verifier) return null; 
-      const res = await fetch('https://accounts.spotify.com/api/token', { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
-        body: new URLSearchParams({ 
-          grant_type: 'authorization_code', 
-          code: code, 
-          redirect_uri: REDIRECT_URI, 
-          client_id: SPOTIFY_CLIENT_ID, 
-          code_verifier: verifier 
-        }) 
-      }); 
-      if (!res.ok) return null; 
-      const data = await res.json(); 
-      data.expires_at = Date.now() + data.expires_in * 1000; 
-      localStorage.setItem(TOKEN_KEY, JSON.stringify(data)); 
-      sessionStorage.removeItem('pkce_verifier'); 
-      return data; 
-    }
-    
-    async function refreshToken() { 
-      const stored = JSON.parse(localStorage.getItem(TOKEN_KEY)); 
-      if (!stored?.refresh_token) return null; 
-      const res = await fetch('https://accounts.spotify.com/api/token', { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
-        body: new URLSearchParams({ 
-          grant_type: 'refresh_token', 
-          refresh_token: stored.refresh_token, 
-          client_id: SPOTIFY_CLIENT_ID 
-        }) 
-      }); 
-      if (!res.ok) { 
-        localStorage.removeItem(TOKEN_KEY); 
-        return null; 
-      } 
-      const data = await res.json(); 
-      data.refresh_token = data.refresh_token || stored.refresh_token; 
-      data.expires_at = Date.now() + data.expires_in * 1000; 
-      localStorage.setItem(TOKEN_KEY, JSON.stringify(data)); 
-      return data; 
-    }
-    
-    async function getToken() { 
-      const stored = JSON.parse(localStorage.getItem(TOKEN_KEY)); 
-      if (stored?.access_token && stored.expires_at > Date.now()) 
-        return stored.access_token; 
-      if (stored?.refresh_token) { 
-        const r = await refreshToken(); 
-        return r?.access_token || null; 
-      } 
-      return null; 
-    }
-    
-    async function fetchNowPlaying() { 
-      const token = await getToken(); 
-      if (!token) { 
-        showConnect(); 
-        return; 
-      } 
-      try { 
-        const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', { 
-          headers: { 'Authorization': 'Bearer ' + token } 
-        }); 
-        if (res.status === 204) { 
-          showIdle('Nothing playing right now'); 
-          return; 
-        } 
-        if (res.status === 401) { 
-          if (await refreshToken()) 
-            return fetchNowPlaying(); 
-          showConnect(); 
-          return; 
-        } 
-        if (!res.ok) { 
-          showIdle('Could not load track'); 
-          return; 
-        } 
-        const d = await res.json(); 
-        showTrack(
-          d.item.name, 
-          d.item.artists.map(a => a.name).join(', '), 
-          d.item.album.images[d.item.album.images.length - 1]?.url || '', 
-          d.is_playing, 
-          d.progress_ms, 
-          d.item.duration_ms
-        ); 
-      } catch (e) { 
-        showIdle('Could not connect to Spotify'); 
-      } 
-    }
-    
-    async function init() { 
-      const code = new URLSearchParams(location.search).get('code'); 
-      if (code) { 
-        history.replaceState({}, document.title, REDIRECT_URI); 
-        await exchangeCode(code); 
-      } 
-      await fetchNowPlaying(); 
-      setInterval(fetchNowPlaying, 5000); 
-    }
-    
+    function generateRandomString(length) { const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~'; const arr = new Uint8Array(length); crypto.getRandomValues(arr); return Array.from(arr, b => chars[b % chars.length]).join(''); }
+    async function sha256(plain) { return crypto.subtle.digest('SHA-256', new TextEncoder().encode(plain)); }
+    function base64encode(input) { const bytes = new Uint8Array(input); let str = ''; bytes.forEach(b => str += String.fromCharCode(b)); return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+    function showConnect() { npArea.innerHTML = `<button class="spotify-connect" onclick="startAuth()"><i class="fa-brands fa-spotify"></i> Connect Spotify</button>`; }
+    function showIdle(msg) { npArea.innerHTML = `<div class="now-playing"><div class="np-art"><div class="np-bars paused"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div></div><div class="np-info"><div class="np-label idle-label"><span class="np-dot"></span><span>Not listening</span></div><div class="np-idle-text">${msg}</div></div></div>`; }
+    function showTrack(song, artist, image, isPlaying, progressMs, durationMs) { const pct = (isPlaying && durationMs > 0) ? Math.min((progressMs / durationMs) * 100, 100) : 0; npArea.innerHTML = `<div class="now-playing active"><div class="np-art">${image ? `<img src="${image}" alt="Album Art">` : `<div class="np-bars ${isPlaying ? '' : 'paused'}"><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div><div class="np-bar"></div></div>`}</div><div class="np-info"><div class="np-label"><span class="np-dot"></span><span>${isPlaying ? 'Listening to' : 'Paused'}</span></div><div class="np-song">${song}</div><div class="np-artist">${artist}</div>${isPlaying ? `<div class="np-progress-wrap"><div class="np-progress-bar" id="np-bar" style="width:${pct}%"></div></div>` : ''}</div></div>`; if (isPlaying) startProgress(progressMs, durationMs); }
+    function startProgress(progressMs, durationMs) { if (progressTimer) clearInterval(progressTimer); const bar = document.getElementById('np-bar'); if (!bar) return; const startTime = Date.now() - progressMs; progressTimer = setInterval(() => { const pct = Math.min(((Date.now() - startTime) / durationMs) * 100, 100); bar.style.width = pct + '%'; if (pct >= 100) clearInterval(progressTimer); }, 1000); }
+    async function startAuth() { const verifier = generateRandomString(64); sessionStorage.setItem('pkce_verifier', verifier); const challenge = base64encode(await sha256(verifier)); const params = new URLSearchParams({ response_type: 'code', client_id: SPOTIFY_CLIENT_ID, scope: SCOPES, code_challenge_method: 'S256', code_challenge: challenge, redirect_uri: REDIRECT_URI }); window.location.href = 'https://accounts.spotify.com/authorize?' + params.toString(); }
+    async function exchangeCode(code) { const verifier = sessionStorage.getItem('pkce_verifier'); if (!verifier) return null; const res = await fetch('https://accounts.spotify.com/api/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ grant_type: 'authorization_code', code: code, redirect_uri: REDIRECT_URI, client_id: SPOTIFY_CLIENT_ID, code_verifier: verifier }) }); if (!res.ok) return null; const data = await res.json(); data.expires_at = Date.now() + data.expires_in * 1000; localStorage.setItem(TOKEN_KEY, JSON.stringify(data)); sessionStorage.removeItem('pkce_verifier'); return data; }
+    async function refreshToken() { const stored = JSON.parse(localStorage.getItem(TOKEN_KEY)); if (!stored?.refresh_token) return null; const res = await fetch('https://accounts.spotify.com/api/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: stored.refresh_token, client_id: SPOTIFY_CLIENT_ID }) }); if (!res.ok) { localStorage.removeItem(TOKEN_KEY); return null; } const data = await res.json(); data.refresh_token = data.refresh_token || stored.refresh_token; data.expires_at = Date.now() + data.expires_in * 1000; localStorage.setItem(TOKEN_KEY, JSON.stringify(data)); return data; }
+    async function getToken() { const stored = JSON.parse(localStorage.getItem(TOKEN_KEY)); if (stored?.access_token && stored.expires_at > Date.now()) return stored.access_token; if (stored?.refresh_token) { const r = await refreshToken(); return r?.access_token || null; } return null; }
+    async function fetchNowPlaying() { const token = await getToken(); if (!token) { showConnect(); return; } try { const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', { headers: { 'Authorization': 'Bearer ' + token } }); if (res.status === 204) { showIdle('Nothing playing right now'); return; } if (res.status === 401) { if (await refreshToken()) return fetchNowPlaying(); showConnect(); return; } if (!res.ok) { showIdle('Could not load track'); return; } const d = await res.json(); showTrack(d.item.name, d.item.artists.map(a => a.name).join(', '), d.item.album.images[d.item.album.images.length - 1]?.url || '', d.is_playing, d.progress_ms, d.item.duration_ms); } catch (e) { showIdle('Could not connect to Spotify'); } }
+    async function init() { const code = new URLSearchParams(location.search).get('code'); if (code) { history.replaceState({}, document.title, REDIRECT_URI); await exchangeCode(code); } await fetchNowPlaying(); setInterval(fetchNowPlaying, 5000); }
     init();
   </script>
 </body>
