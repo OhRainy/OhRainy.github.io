@@ -1,0 +1,24 @@
+@keyframes cardIn { 0% { opacity: 0; transform: translateY(30px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes ringRotate { to { transform: rotate(360deg); } }
+@keyframes heartBeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.25); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } 60% { transform: scale(1); } }
+@keyframes heartRing { 0% { transform: scale(0.5); opacity: 0.6; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes emmiShimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes underlineSlide { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
+@keyframes floatHeart { 0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; } 15% { opacity: 0.5; } 50% { opacity: 0.3; } 100% { transform: translateY(-50px) scale(0.2) rotate(-15deg); opacity: 0; } }
+@keyframes barBounce { 0% { transform: scaleY(0.4); } 100% { transform: scaleY(1); } }
+@keyframes npPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+@keyframes floatGlow { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-40px, 30px) scale(1.15); } }
+
+.avatar-ring { animation: ringRotate 6s linear infinite; }
+.love-heart { animation: heartBeat 1.4s ease-in-out infinite; }
+.love-heart-ring { animation: heartRing 1.4s ease-out infinite; }
+.emmi-name { animation: emmiShimmer 3s ease-in-out infinite; }
+.emmi-underline, .emmi-underline-glow { animation: underlineSlide 2.5s ease-in-out infinite; }
+.mini-heart { animation: floatHeart 4s ease-in infinite; }
+.np-bar { animation: barBounce 0.8s ease-in-out infinite alternate; }
+.np-bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+.np-bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+.np-bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+.np-bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+.np-label .np-dot { animation: npPulse 1.5s ease-in-out infinite; }
+.ambient-glow.g3 { animation: floatGlow 8s ease-in-out infinite alternate; }

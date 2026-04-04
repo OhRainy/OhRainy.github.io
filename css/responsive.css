@@ -1,0 +1,15 @@
+@media (max-width: 480px) {
+  .card-wrapper { padding: 12px; }
+  .card { padding: 32px 22px 28px; }
+  .display-name { font-size: 1.4rem; }
+  .emmi-name { font-size: 1.6rem; }
+  .pre-edds { font-size: 1.9rem; }
+  .socials { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

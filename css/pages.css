@@ -1,0 +1,35 @@
+/* ═══════════════════════════════════════════
+   Page Container & Transitions System
+   ═══════════════════════════════════════════ */
+
+.pages-container {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+}
+
+.page {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: pageOut 0.3s ease forwards;
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: pageIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pageOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(-20px) scale(0.98); }
+}
+
+.page-content { position: relative; z-index: 2; }
