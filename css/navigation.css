@@ -1,20 +1,18 @@
 /* ═══════════════════════════════════════════
    Side Navigation Component
-   Fixed position OVERLAY on right side
+   Floating OVERLAY on right side
    Does NOT affect main card layout!
    ═══════════════════════════════════════════ */
 
-/* ── Card stays exactly as original! ── */
-/* No flex changes to .card */
-
+/* Card stays exactly as original! No layout changes needed */
 .card-main {
   position: relative;
 }
 
-/* ── Floating Side Navigation Bar ── */
+/* ── Floating Side Navigation Bar (Outside Card) ── */
 .sidebar-nav {
   position: absolute;
-  right: -70px; /* Float OUTSIDE the card on the right */
+  right: -70px;
   top: 50%;
   transform: translateY(-50%);
   width: 56px;
@@ -75,14 +73,12 @@
   filter: drop-shadow(0 4px 12px var(--accent-glow));
 }
 
-/* Active/Selected State */
+/* Active State */
 .nav-link.active {
   background: linear-gradient(180deg, rgba(255,126,179,0.18), rgba(255,126,179,0.06));
   border-color: var(--accent);
   color: var(--accent);
-  box-shadow:
-    0 0 20px var(--accent-glow),
-    inset 0 0 12px rgba(255,126,179,0.1);
+  box-shadow: 0 0 20px var(--accent-glow), inset 0 0 12px rgba(255,126,179,0.1);
 }
 
 .nav-link.active i {
@@ -95,7 +91,7 @@
   50% { opacity: 0.8; transform: scale(1.1); }
 }
 
-/* Active indicator dot */
+/* Active Indicator Dot */
 .nav-link.active::after {
   content: '';
   position: absolute;
@@ -110,11 +106,9 @@
 }
 
 /* Spacer */
-.sidebar-spacer {
-  height: 8px;
-}
+.sidebar-spacer { height: 8px; }
 
-/* Bottom decoration */
+/* Bottom Decoration */
 .sidebar-bottom {
   margin-top: 12px;
   display: flex;
@@ -137,7 +131,7 @@
   animation: floatHeart 3s ease-in-out infinite;
 }
 
-/* ── Mobile: Hide floating sidebar ── */
+/* Mobile: Hide floating sidebar on small screens */
 @media (max-width: 520px) {
   .sidebar-nav {
     display: none !important;
