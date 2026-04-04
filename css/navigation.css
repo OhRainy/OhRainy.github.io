@@ -1,139 +1,126 @@
 /* ═══════════════════════════════════════════
    Side Navigation Component
-   Floating OVERLAY on right side
-   Does NOT affect main card layout!
+   VISIBLE inside card on the right side
    ═══════════════════════════════════════════ */
 
-/* Card stays exactly as original! No layout changes needed */
 .card-main {
   position: relative;
+  display: flex;
+  gap: 12px;
 }
 
-/* ── Floating Side Navigation Bar (Outside Card) ── */
+/* ── Navigation Bar (Inside Card, Right Side) ── */
 .sidebar-nav {
-  position: absolute;
-  right: -70px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 56px;
-  background: rgba(20, 16, 40, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 8px;
   gap: 6px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 60px var(--accent-glow);
-  z-index: 100;
+  padding: 12px 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 48px;
+  flex-shrink: 0;
+  height: fit-content;
 }
 
-/* ── Nav Link/Button (Compact Vertical) ── */
+/* ── Nav Link/Button ── */
 .nav-link {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  width: 40px;
-  height: 46px;
+  width: 36px;
+  height: 42px;
   border-radius: 10px;
   background: transparent;
   border: 1px solid transparent;
   color: var(--fg-muted);
   font-family: 'Quicksand', sans-serif;
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
+  transition: all 0.3s ease;
   text-align: center;
-  letter-spacing: 0.3px;
 }
 
 .nav-link i {
-  font-size: 1.05rem;
-  transition: all 0.3s ease;
-  line-height: 1;
+  font-size: 1rem;
+  transition: transform 0.3s ease;
 }
 
-/* Hover State */
 .nav-link:hover {
   background: rgba(255,126,179,0.12);
   border-color: rgba(255,126,179,0.3);
   color: var(--accent);
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
 .nav-link:hover i {
   transform: translateY(-2px);
-  filter: drop-shadow(0 4px 12px var(--accent-glow));
 }
 
-/* Active State */
 .nav-link.active {
   background: linear-gradient(180deg, rgba(255,126,179,0.18), rgba(255,126,179,0.06));
   border-color: var(--accent);
   color: var(--accent);
-  box-shadow: 0 0 20px var(--accent-glow), inset 0 0 12px rgba(255,126,179,0.1);
+  box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .nav-link.active i {
   animation: sideNavIconPulse 2s ease-in-out infinite;
-  filter: drop-shadow(0 0 10px var(--accent));
 }
 
 @keyframes sideNavIconPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.1); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
-/* Active Indicator Dot */
 .nav-link.active::after {
   content: '';
   position: absolute;
-  bottom: 5px;
+  bottom: 4px;
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
   height: 3px;
   background: var(--accent);
   border-radius: 50%;
-  box-shadow: 0 0 6px var(--accent);
 }
 
-/* Spacer */
-.sidebar-spacer { height: 8px; }
+.sidebar-spacer { height: 6px; }
 
-/* Bottom Decoration */
 .sidebar-bottom {
-  margin-top: 12px;
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .sidebar-decor-line {
-  width: 20px;
+  width: 18px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-  opacity: 0.4;
+  background: var(--border);
+  opacity: 0.3;
 }
 
 .sidebar-mini-heart {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: var(--heart-soft);
-  opacity: 0.35;
+  opacity: 0.3;
   animation: floatHeart 3s ease-in-out infinite;
 }
 
-/* Mobile: Hide floating sidebar on small screens */
-@media (max-width: 520px) {
+/* Mobile: Hide nav on small screens */
+@media (max-width: 480px) {
   .sidebar-nav {
     display: none !important;
+  }
+  
+  .card-main {
+    flex-direction: column;
   }
 }
