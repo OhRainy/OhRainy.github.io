@@ -1,126 +1,190 @@
 /* ═══════════════════════════════════════════
-   Side Navigation Component
-   VISIBLE inside card on the right side
+   Navigation Component
+   FLOATING AT RIGHT SIDE OF CARD
    ═══════════════════════════════════════════ */
 
-.card-main {
+/* ── Card Wrapper: Makes space for nav ── */
+.card-wrapper {
   position: relative;
   display: flex;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  gap: 0; /* No gap initially */
 }
 
-/* ── Navigation Bar (Inside Card, Right Side) ── */
+/* ── Main Card (unchanged) ── */
+.card {
+  /* Keep all existing card styles - don't modify! */
+}
+
+/* ── Navigation Panel (Floats to right of card!) ── */
 .sidebar-nav {
+  position: relative; /* In normal flow, next to card */
+  
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 12px 8px;
-  background: rgba(255,255,255,0.03);
+  padding: 16px 10px;
+  
+  background: rgba(20, 16, 40, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
   border: 1px solid var(--border);
-  border-radius: 14px;
-  width: 48px;
-  flex-shrink: 0;
+  border-radius: var(--card-radius);
+  
+  width: 54px;
   height: fit-content;
+  max-height: 500px;
+  
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 60px var(--accent-glow);
+    
+  z-index: 10;
+  flex-shrink: 0; /* Don't shrink */
 }
 
-/* ── Nav Link/Button ── */
+/* ── Nav Buttons ── */
 .nav-link {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  width: 36px;
-  height: 42px;
-  border-radius: 10px;
+  gap: 4px;
+  width: 38px;
+  height: 44px;
+  border-radius: 12px;
   background: transparent;
   border: 1px solid transparent;
   color: var(--fg-muted);
   font-family: 'Quicksand', sans-serif;
-  font-size: 0.5rem;
+  font-size: 0.52rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-align: center;
+  letter-spacing: 0.3px;
 }
 
 .nav-link i {
-  font-size: 1rem;
+  font-size: 1.05rem;
   transition: transform 0.3s ease;
+  line-height: 1;
 }
 
+/* Hover */
 .nav-link:hover {
-  background: rgba(255,126,179,0.12);
-  border-color: rgba(255,126,179,0.3);
+  background: rgba(255, 126, 179, 0.15);
+  border-color: rgba(255, 126, 179, 0.4);
   color: var(--accent);
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .nav-link:hover i {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  filter: drop-shadow(0 6px 12px var(--accent-glow));
 }
 
+/* Active State */
 .nav-link.active {
-  background: linear-gradient(180deg, rgba(255,126,179,0.18), rgba(255,126,179,0.06));
+  background: linear-gradient(180deg, 
+    rgba(255, 126, 179, 0.2), 
+    rgba(255, 126, 179, 0.06));
   border-color: var(--accent);
   color: var(--accent);
-  box-shadow: 0 0 15px var(--accent-glow);
+  box-shadow: 
+    0 0 25px var(--accent-glow),
+    inset 0 0 15px rgba(255, 126, 179, 0.12);
 }
 
 .nav-link.active i {
-  animation: sideNavIconPulse 2s ease-in-out infinite;
+  animation: navPulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px var(--accent));
 }
 
-@keyframes sideNavIconPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+@keyframes navPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.12); }
 }
 
+/* Active Dot Indicator */
 .nav-link.active::after {
   content: '';
   position: absolute;
-  bottom: 4px;
+  bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
   height: 3px;
   background: var(--accent);
   border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
 }
 
-.sidebar-spacer { height: 6px; }
+/* Spacer */
+.sidebar-spacer { height: 10px; }
 
+/* Bottom Decoration */
 .sidebar-bottom {
-  margin-top: 8px;
+  margin-top: 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 
 .sidebar-decor-line {
-  width: 18px;
+  width: 22px;
   height: 2px;
-  background: var(--border);
-  opacity: 0.3;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  opacity: 0.4;
 }
 
 .sidebar-mini-heart {
-  font-size: 0.55rem;
+  font-size: 0.65rem;
   color: var(--heart-soft);
-  opacity: 0.3;
+  opacity: 0.35;
   animation: floatHeart 3s ease-in-out infinite;
 }
 
-/* Mobile: Hide nav on small screens */
-@media (max-width: 480px) {
-  .sidebar-nav {
-    display: none !important;
+/* ── Mobile: Stack vertically or hide ── */
+@media (max-width: 768px) {
+  .card-wrapper {
+    flex-direction: column;
+    align-items: stretch;
   }
   
-  .card-main {
-    flex-direction: column;
+  .sidebar-nav {
+    width: 100%;
+    max-height: none;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px 16px;
+    order: -1; /* Show above card on mobile */
+    border-radius: 14px;
+  }
+  
+  .nav-link {
+    width: auto;
+    height: 38px;
+    flex-direction: row;
+    padding: 0 12px;
+    gap: 6px;
+  }
+  
+  .nav-link i {
+    font-size: 0.95rem;
+  }
+  
+  .nav-link.active::after {
+    bottom: 4px;
+  }
+  
+  .sidebar-spacer,
+  .sidebar-bottom {
+    display: none;
   }
 }
